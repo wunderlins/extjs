@@ -18,7 +18,7 @@ class enum {
 			return $this->constants;
 		}
 		
-		return $this->$name;
+		return array();
 	}
 }
 
