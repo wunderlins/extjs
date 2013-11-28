@@ -215,10 +215,12 @@ class service_basic {
 /**
  * The service
  *
- * every public method with a prefix "call_" in this class is callable. The 
- * method parameters should be defined in it's own class.
+ * every public method with a prefix "call_" in this class is callable as 
+ * service method via http. The method parameters should be defined in it's 
+ * own class.
  *
- * the GET/POST parameter defines the method to be called
+ * the fn GET/POST parameter defines the method to be called. "call_" is 
+ * appended to fn for searching of an appropriate method.
  */
 class service extends service_basic {
 	function __construct($config = array()) {
