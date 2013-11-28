@@ -1,5 +1,7 @@
 <?php
 
+ini_set("reporting_level", E_ALL);
+
 /**
  * all constants are used for enumeration
  */
@@ -175,12 +177,27 @@ class service_basic {
 	
 	public static function main() {
 		$s = new service();
-		var_dump($s);
-		// check for POST/GET fn parameter
+		//var_dump($s);
 		
-		//$fn = $_GET["fn"];
+		// we expect to get a post/get parameter named fn. This parameter defines
+		// which api function should be called
+		$fn = (isset($_GET["fn"])) ? $_GET["fn"] : null;
+		if(!$fn)
+			$fn = (isset($_POST["fn"])) ? $_POST["fn"] : null;
+		if(!$fn) {
+			// failed to retreive api function name. this is where we abort
+			// TODO: serve JSon error to client
+			die("unhandled error, no FN param");
+		}
+		echo $fn;
 		
-		// lookup fn in api, check if call_ + fn exists
+		// if we have an fn parameter, check if a method in this class called 
+		// "call_".fn exists. if not, throw error sensible message
+		if (!method_exists($s, "call_" . $fn)) {
+			// TODO: 
+			die("unhandled error, method does not exist");
+		}
+		
 		// validate parameters, sanitize input
 		// execute function
 	}
