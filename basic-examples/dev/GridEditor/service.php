@@ -1,6 +1,6 @@
 <?php
 
-ini_set("reporting_level", E_ALL);
+error_reporting(E_ALL);
 
 /**
  * all constants are used for enumeration
@@ -189,7 +189,7 @@ class service_basic {
 			// TODO: serve JSon error to client
 			die("unhandled error, no FN param");
 		}
-		echo $fn;
+		//echo $fn;
 		
 		// if we have an fn parameter, check if a method in this class called 
 		// "call_".fn exists. if not, throw error sensible message
@@ -198,7 +198,16 @@ class service_basic {
 			die("unhandled error, method does not exist");
 		}
 		
+		//echo "we got so far ...";
+		
 		// validate parameters, sanitize input
+		//
+		// get metadata aboutthis api call, check if all parameters are submitted 
+		// and if their data type is apropriate
+		// 
+		// FIXME: ended here, check if the api call's parameters are valid.
+		
+		
 		// execute function
 	}
 }
