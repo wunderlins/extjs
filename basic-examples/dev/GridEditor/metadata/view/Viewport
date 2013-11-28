@@ -1,0 +1,123 @@
+{
+    "type": "Ext.container.Viewport",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|initialView": true,
+        "designer|userClassName": "Viewport",
+        "layout": "border"
+    },
+    "designerId": "f9aba745-02b9-4206-b93e-137f703e2070",
+    "cn": [
+        {
+            "type": "Ext.panel.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "height": 91,
+                "layout|region": "north",
+                "title": "Search"
+            },
+            "designerId": "3d57f9e2-7bcc-4f17-b3a0-d6450772fb1b"
+        },
+        {
+            "type": "Ext.grid.property.Grid",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "layout|region": "east",
+                "source": [
+                    "{\"Property 1\":\"String\",\"Property 2\":true,\"Property 3\":\"2013-11-28T18:53:44\",\"Property 4\":123}"
+                ],
+                "title": "Detail",
+                "width": 150
+            },
+            "designerId": "95c6fbb2-0fc5-465f-8782-1b155bc3780b"
+        },
+        {
+            "type": "Ext.grid.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "layout|region": "center",
+                "title": "Data"
+            },
+            "designerId": "0d5db953-144f-4685-9c10-9597e18e6293",
+            "cn": [
+                {
+                    "type": "Ext.grid.column.Column",
+                    "reference": {
+                        "name": "columns",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "dataIndex": "string",
+                        "text": "String"
+                    },
+                    "designerId": "d18443be-7d03-4cf2-bac7-491e4e8dcf67"
+                },
+                {
+                    "type": "Ext.grid.column.Number",
+                    "reference": {
+                        "name": "columns",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "dataIndex": "number",
+                        "text": "Number"
+                    },
+                    "designerId": "33aea3c3-65e2-41ec-8606-d2f76003a47d"
+                },
+                {
+                    "type": "Ext.grid.column.Date",
+                    "reference": {
+                        "name": "columns",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "dataIndex": "date",
+                        "text": "Date"
+                    },
+                    "designerId": "ad093b59-8ae7-43de-8114-a19532cfc404"
+                },
+                {
+                    "type": "Ext.grid.column.Boolean",
+                    "reference": {
+                        "name": "columns",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "dataIndex": "bool",
+                        "text": "Boolean"
+                    },
+                    "designerId": "29ae90fd-657a-417f-a039-5afa471bf7eb"
+                },
+                {
+                    "type": "Ext.grid.View",
+                    "reference": {
+                        "name": "viewConfig",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "designerId": "b7636b96-d950-4a41-a9ee-a491b628db3d"
+                }
+            ]
+        }
+    ]
+}

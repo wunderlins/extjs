@@ -1,0 +1,36 @@
+{
+    "name": "GridEditor",
+    "settings": {
+        "cmd": {},
+        "canvasControls": {
+            "viewportSize": {
+                "name": "Auto Expand",
+                "builtIn": true,
+                "height": null,
+                "width": null
+            }
+        },
+        "urlPrefix": "",
+        "exportPath": ""
+    },
+    "xdsVersion": "3.0.0",
+    "xdsBuild": 1337,
+    "schemaVersion": 1,
+    "upgradeVersion": 300000000003,
+    "framework": "ext42",
+    "viewOrderMap": {
+        "view": [
+            "f9aba745-02b9-4206-b93e-137f703e2070"
+        ],
+        "store": [],
+        "controller": [],
+        "model": [],
+        "resource": [
+            "2b315d18-b73c-43f2-9f39-aff1decc39ef",
+            "d7333774-b406-48fc-8356-37d6de3f64ea"
+        ],
+        "app": [
+            "application"
+        ]
+    }
+}
