@@ -1,4 +1,7 @@
 <?php
+/**
+ * JSon service classes for ExtJS Data stores
+ */
 
 error_reporting(E_ALL);
 
@@ -23,11 +26,35 @@ class enum {
 }
 
 /**
+ * result class
+ * 
+ * This class contains all properties for a unified result message
+ * - metaProperty: might be used by ext for dynamic configurations
+ * - record: single record result
+ * - root: recordset data
+ * - success: boolean, false if there was an error
+ * - total: number of records in root
+ * - type: service_data::TYPE_* (record/recordset)
+ */
+class service_result {
+	public $metaProperty = null;
+	public $record = null;
+	public $root = null;
+	public $success = null;
+	public $total = null;
+	public $type = null;
+	
+	function __construct($type) {
+		$this->type = $type;
+	} 
+}
+
+/**
  * Standard Error message for json data stores
  */
 class service_error {
-	protected $code    = 0;
-	protected $message = "";
+	public $code    = 0;
+	public $message = "";
 	
 	function __construct($code, $message) {
 		$this->code    = $code;
@@ -52,6 +79,11 @@ class service_data extends enum {
 		$this->type = $type;
 	}
 	
+	/**
+	 * add a single record to the result
+	 * 
+	 * used for multi record results
+	 */
 	public function add_record(array $rec) {
 		if ($this->type == self::TYPE_RECORD)
 			return false;
@@ -60,7 +92,12 @@ class service_data extends enum {
 		$this->num++;
 		return true;
 	}
-
+	
+	/**
+	 * replace result with this record
+	 * 
+	 * used for single record results
+	 */
 	public function set_record(array $rec) {
 		if ($this->type == self::TYPE_RECORDSET)
 			return false;
@@ -111,10 +148,13 @@ class service_api_item {
 /**
  * Basic service class for communicating with ExtJS
  *
- * TODO: Put this in a separate class together with the rest of basic classes.
+ * TODO: Put this in a separate file together with the rest of basic classes.
  */
 class service_basic {
-	
+	protected $dbconn_active = null;
+	protected $dbconn_pd = null;
+	protected $dbconn_read = null;
+			
 	/**
 	 * associative array of config values
 	 */
@@ -138,10 +178,19 @@ class service_basic {
 	}
 	
 	/**
-	 * compile std JSon response
-	 * TODO: implementation
+	 * handle errors
+	 * 
+	 * This is a convenience function to handle errors. It will send a json 
+	 * response, and abort the script with $code as exit code.
 	 */
-	protected function response(service_data $data, service_error $error) {;}
+	protected function error($code, $message) {
+		$r = new service_result(null);
+		$r->error = new service_error($code, $message);
+		$r->success = false;
+		
+		$this->serve($r);
+		exit($code);
+	}
 	
 	/**
 	 * shorthand for creating api descriptions from an array
@@ -166,15 +215,40 @@ class service_basic {
 	}
 	
 	/**
-	 * run an api function
-	 *
-	 * TODO: implementation, check if method is in top down class, must b
+	 * usb dbconn 
+	 * 
+	 * there re 2 ways: read only, which is the fast method
+	 * and read/write, which uses PD methods with logging. this method is 
+	 * dog slow and not recommendable to populate datastores. 
 	 */
-	protected function call() {
-		// validate result
-		// send response
+	protected function get_dbconn($write=false) {
+		if ($write) {
+			// TODO: instantiate a PD dbconn without wrecking output 
+			$this->dbconn_active = $this->dbconn_pd;
+		} else {
+		
+			include_once("../../../uhbs_config.php");
+			$this->dbconn_read = isop_dbconn();
+			$this->dbconn_active = $this->dbconn_read;
+			return isop_dbconn();
+			
+		}
+		return $this->dbconn_active;
 	}
 	
+	/**
+	 * serve result
+	 */
+	public function serve(service_result $res) {
+		header("Content-type: application/javascript");
+		print(json_encode($res));
+	}
+	
+	/**
+	 * main method
+	 * 
+	 * This method should be called once the service is declared
+	 */
 	public static function main() {
 		$s = new service();
 		//var_dump($s);
@@ -186,30 +260,64 @@ class service_basic {
 			$fn = (isset($_POST["fn"])) ? $_POST["fn"] : null;
 		if(!$fn) {
 			// failed to retreive api function name. this is where we abort
-			// TODO: serve JSon error to client
-			die("unhandled error, no FN param");
+			$s->error(1, "no such method"); // exit 
 		}
-		//echo $fn;
 		
 		// if we have an fn parameter, check if a method in this class called 
 		// "call_".fn exists. if not, throw error sensible message
 		if (!method_exists($s, "call_" . $fn)) {
-			// TODO: 
-			die("unhandled error, method does not exist");
+			$s->error(2, "method $fn does not exist"); // exit 
 		}
 		
 		//echo "we got so far ...";
+		
+		// get API
+		$api = $s->find_api_call($fn);
+		if (!$api) {
+			$s->error(3, "no api description"); // exit 
+		}
 		
 		// validate parameters, sanitize input
 		//
 		// get metadata aboutthis api call, check if all parameters are submitted 
 		// and if their data type is apropriate
-		// 
-		// FIXME: ended here, check if the api call's parameters are valid.
+		$params = array();
+		foreach($api->param as $ix => $p) {
+			$value = NULL;
+			if(isset($_GET[$p->name])) $value = $_GET[$p->name];
+			else if(isset($_GET[$p->name])) $value = $_GET[$p->name];
+			
+			// parameter missing?
+			if ($value === NULL) {
+				$s->error(4, "Parameter ". $p->name ." missing!"); // exit 
+			}
+			$params[$p->name] = $value;
+		}
 		
+		// TODO: type checking
 		
 		// execute function
+		$ret = call_user_func_array(array($s, "call_".$fn), $params);
+		
+		// handle result
+		$result = new service_result($api->return);
+		$result->root = $ret;
+		$result->total = sizeOf($ret);
+		$result->success = true;
+		
+		$s->serve($result);
 	}
+	
+	/**
+	 * lookup callable methods
+	 */
+	public function find_api_call($name) {
+		foreach ($this->api as $a) {
+			if ($a->fn == $name)
+				return $a;
+		}
+		return null;
+	} 
 }
 
 /**
@@ -244,25 +352,16 @@ class service extends service_basic {
 	 * api get list of items
 	 */
 	public function call_get_list($sort, $dir, $start, $count) {
-		;
+		return array(
+			array("name" => "name1", "value" => "value1"),
+			array("name" => "name2", "value" => "value2"),
+			array("name" => "name3", "value" => "value3"),
+			array("name" => "name4", "value" => "value4")
+		);
 	}
 }
 
+// run the service's main method.
 service::main();
-
-/*
-class a extends enum {
-	const C0 = 0;
-	const C1 = 1;
-	const C2 = 2;
-	public $a = 0;
-}
-
-$b = new a();
-var_dump($b->ENUM["C2"]);
-var_dump($b->a);
-*/
-
-// $r = new ReflectionClass('service_parameter'); print_r($r->getConstants());
 
 ?>
