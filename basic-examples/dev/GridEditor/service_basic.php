@@ -37,7 +37,7 @@ class enum {
  * - type: service_data::TYPE_* (record/recordset)
  */
 class service_result {
-	public $metaProperty = null;
+	public $metaData = null;
 	public $record = null;
 	public $root = null;
 	public $success = null;
