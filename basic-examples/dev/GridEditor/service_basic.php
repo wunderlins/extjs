@@ -136,9 +136,75 @@ class service_parameter extends enum {
 	public $name = "";
 	public $type = NULL;
 	
+	/**
+	 * constructor
+	 * 
+	 * $type must be of self::TYPE_* or the constructor will return null
+	 */
 	function __construct($name, $type) {
+		// check if we have a valid type
+		if (!in_array($type, $this->ENUM))
+			return null;
+		
 		$this->name = $name;
 		$this->type = $type;
+	}
+	
+	protected function is_bool($value) {
+		$ok = false;
+		if ($value === 1 || $value == "1" || $value === true ||
+		    $value === 0 || $value == "0" || $value === false||
+		    strtolower($value) == "true" || strtolower($value) == "false") {
+			$ok = true;
+		}
+		return $ok;
+	}
+	
+	protected function is_int($value) {
+		if (strlen((int) $value) == strlen($value)) {
+			return true;
+		}
+		return false;
+	}
+	
+	protected function is_float($value) {
+		if (strlen((float) $value) == strlen($value)) {
+			return true;
+		}
+		return false;
+	}
+	
+	protected function is_array($value) {
+		return is_array($value);
+	}
+	
+	protected function is_object($value) {
+		return is_array($value);
+	}
+	
+	public function validate($value) {
+		switch($this->type) {
+			case 1: // bool
+				return $this->is_bool($value);
+
+			case 2: // int
+				return $this->is_int($value);
+			
+			case 3: // float
+				return $this->is_float($value);
+			
+			case 4: // string
+				return ($value && !$this->is_object($value) && !$this->is_array($value));
+
+			case 5: // array
+				return $this->is_array($value);
+			
+			case 6: // object
+				return $this->is_object($value);
+			
+		}
+		
+		return false;
 	}
 }
 
@@ -293,22 +359,33 @@ class service_basic {
 		
 		// validate parameters, sanitize input
 		//
-		// get metadata aboutthis api call, check if all parameters are submitted 
+		// get metadata about this api call, check if all parameters are submitted 
 		// and if their data type is apropriate
 		$params = array();
 		foreach($api->param as $ix => $p) {
+			
 			$value = NULL;
-			if(isset($_GET[$p->name])) $value = $_GET[$p->name];
-			else if(isset($_GET[$p->name])) $value = $_GET[$p->name];
+			if(isset($_GET[$p->name])) 
+				$value = $_GET[$p->name];
+			else if(isset($_GET[$p->name])) 
+				$value = $_GET[$p->name];
 			
 			// parameter missing?
 			if ($value === NULL) {
 				$s->error(4, "Parameter ". $p->name ." missing!"); // exit 
 			}
+			
+			// TODO: type checking
+			//echo "$value : " . $p->type . " ";
+			//var_dump((int) $value);
+			//var_dump($value);
+			$valid = $p->validate($value);
+			//var_dump($valid);
+			if (!$valid) 
+				$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
+
 			$params[$p->name] = $value;
 		}
-		
-		// TODO: type checking
 		
 		// execute function
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);
@@ -339,5 +416,16 @@ class service_basic {
 		return null;
 	} 
 }
+
+/*
+class service_model {
+	protected $fields = null;
+	protected $validations = null;
+}
+
+class service_model_field {
+
+}
+*/
 
 ?>
