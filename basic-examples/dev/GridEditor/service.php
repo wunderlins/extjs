@@ -315,8 +315,12 @@ class service_basic {
 		
 		// handle result
 		$result = new service_result($ret->type);
-		$result->root = $ret->data;
-		$result->total = $ret->num;
+		if ($ret->type == service_data::TYPE_RECORDSET) {
+			$result->root = $ret->data;
+			$result->total = $ret->num;
+		} else {
+			$result->record = $ret->data;
+		}
 		$result->success = true;
 		
 		//print_r($ret);
@@ -361,6 +365,13 @@ class service extends service_basic {
 			"desc" => "Returns a recordset of items"
 		));
 		
+		$this->add_api(array(
+			"fn" => "get_item",
+			"param" => array(),
+			"return" => service_data::TYPE_RECORD,
+			"desc" => "Returns one record"
+		));
+		
 		parent::__construct($config);
 	}
 	
@@ -376,6 +387,13 @@ class service extends service_basic {
 			array("name" => "name3", "value" => "value3"),
 			array("name" => "name4", "value" => "value4")
 		));
+		
+		return $data;
+	}
+	
+	public function call_get_item() {
+		$data = new service_data(service_data::TYPE_RECORD);
+		$data->set_record(array("name" => "name1", "value" => "value1"));
 		
 		return $data;
 	}
