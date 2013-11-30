@@ -72,7 +72,7 @@ class service_data extends enum {
 	protected $num  = null;
 	protected $type = null;
 
-	function __construct(int $type) {
+	function __construct($type) {
 		if($type == self::TYPE_RECORDSET) {
 			$this->num = 0;
 		}
@@ -104,6 +104,20 @@ class service_data extends enum {
 		
 		$this->data = $rec;
 		$this->num = null;
+		return true;
+	}
+	
+	/**
+	 * replace result with this record
+	 * 
+	 * used for single record results
+	 */
+	public function set_records(array $recs) {
+		if ($this->type == self::TYPE_RECORD)
+			return false;
+		
+		$this->data = $recs;
+		$this->num = sizeof($recs);
 		return true;
 	}
 }
@@ -300,10 +314,12 @@ class service_basic {
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);
 		
 		// handle result
-		$result = new service_result($api->return);
-		$result->root = $ret;
-		$result->total = sizeOf($ret);
+		$result = new service_result($ret->type);
+		$result->root = $ret->data;
+		$result->total = $ret->num;
 		$result->success = true;
+		
+		//print_r($ret);
 		
 		$s->serve($result);
 	}
@@ -352,12 +368,16 @@ class service extends service_basic {
 	 * api get list of items
 	 */
 	public function call_get_list($sort, $dir, $start, $count) {
-		return array(
+		$data = new service_data(service_data::TYPE_RECORDSET);
+	
+		$data->set_records(array(
 			array("name" => "name1", "value" => "value1"),
 			array("name" => "name2", "value" => "value2"),
 			array("name" => "name3", "value" => "value3"),
 			array("name" => "name4", "value" => "value4")
-		);
+		));
+		
+		return $data;
 	}
 }
 
