@@ -344,7 +344,7 @@ class service_basic {
 	 * serve result
 	 */
 	public function serve(service_result $res) {
-		header("Content-type: application/javascript");
+		header("Content-type: application/json");
 		print(json_encode($res));
 	}
 	
@@ -377,6 +377,7 @@ class service_basic {
 		
 		// get API
 		$api = $s->find_api_call($fn);
+		//var_dump($api);
 		if (!$api) {
 			$s->error(3, "no api description"); // exit 
 		}
