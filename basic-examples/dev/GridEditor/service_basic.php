@@ -150,6 +150,11 @@ class service_parameter extends enum {
 		$this->type = $type;
 	}
 	
+	/**
+	 * check if input value (get/post) is a boolean value
+	 *
+	 * 1/0/true/false (case insensitive) allowed
+	 */
 	protected function is_bool($value) {
 		$ok = false;
 		if ($value === 1 || $value == "1" || $value === true ||
@@ -160,6 +165,9 @@ class service_parameter extends enum {
 		return $ok;
 	}
 	
+	/**
+	 * check if input value from get/post is integer
+	 */
 	protected function is_int($value) {
 		if (strlen((int) $value) == strlen($value) &&
 		   (int) $value . "" == $value) {
@@ -168,6 +176,9 @@ class service_parameter extends enum {
 		return false;
 	}
 	
+	/**
+	 * check if input value from get/post is float
+	 */
 	protected function is_float($value) {
 		if (strlen((float) $value) == strlen($value) && 
 		   (float) $value . "" == $value) {
@@ -176,14 +187,27 @@ class service_parameter extends enum {
 		return false;
 	}
 	
+	/**
+	 * check if input value from get/post is php array
+	 */
 	protected function is_array($value) {
 		return is_array($value);
 	}
 	
+	/**
+	 * check if input value from get/post is php array
+	 *
+	 * FIXME: the only sensible way to post objects is via json. how to handle 
+	 *        decoding. should this be done here or should we add a separate
+	 *        casting mechanism first?
+	 */
 	protected function is_object($value) {
 		return is_array($value);
 	}
 	
+	/**
+	 * validate post/get value against this data type
+	 */
 	public function validate($value) {
 		switch($this->type) {
 			case 1: // bool
@@ -229,8 +253,6 @@ class service_api_item {
 
 /**
  * Basic service class for communicating with ExtJS
- *
- * TODO: Put this in a separate file together with the rest of basic classes.
  */
 class service_basic {
 	protected $dbconn_active = null;
