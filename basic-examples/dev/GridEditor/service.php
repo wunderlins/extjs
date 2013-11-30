@@ -18,10 +18,10 @@ class service extends service_basic {
 		$this->add_api(array(
 			"fn" => "get_list",
 			"param" => array(
-				"sort"  => service_parameter::TYPE_STRING,
-				"dir"   => service_parameter::TYPE_STRING,
-				"start" => service_parameter::TYPE_INT,
-				"count" => service_parameter::TYPE_INT
+				"string"  => service_parameter::TYPE_STRING,
+				"float"   => service_parameter::TYPE_FLOAT,
+				"bool" => service_parameter::TYPE_BOOL,
+				"int" => service_parameter::TYPE_INT
 			),
 			"return" => service_data::TYPE_RECORDSET,
 			"desc" => "Returns a recordset of items"

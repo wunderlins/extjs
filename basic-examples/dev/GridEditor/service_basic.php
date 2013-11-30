@@ -161,14 +161,16 @@ class service_parameter extends enum {
 	}
 	
 	protected function is_int($value) {
-		if (strlen((int) $value) == strlen($value)) {
+		if (strlen((int) $value) == strlen($value) &&
+		   (int) $value . "" == $value) {
 			return true;
 		}
 		return false;
 	}
 	
 	protected function is_float($value) {
-		if (strlen((float) $value) == strlen($value)) {
+		if (strlen((float) $value) == strlen($value) && 
+		   (float) $value . "" == $value) {
 			return true;
 		}
 		return false;
