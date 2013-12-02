@@ -28,8 +28,21 @@ Ext.define('GridEditor.view.Viewport', {
                 {
                     xtype: 'panel',
                     region: 'north',
-                    height: 91,
-                    title: 'Search'
+                    title: 'Search',
+                    items: [
+                        {
+                            xtype: 'datefield',
+                            fieldLabel: 'Start',
+                            name: 'myname',
+                            format: 'd.m.Y',
+                            listeners: {
+                                change: {
+                                    fn: me.onDatefieldChange,
+                                    scope: me
+                                }
+                            }
+                        }
+                    ]
                 },
                 {
                     xtype: 'propertygrid',
@@ -74,6 +87,11 @@ Ext.define('GridEditor.view.Viewport', {
         });
 
         me.callParent(arguments);
+    },
+
+    onDatefieldChange: function(field, newValue, oldValue, eOpts) {
+        alert(field.name);
+
     }
 
 });

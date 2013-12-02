@@ -20,11 +20,47 @@
             },
             "codeClass": null,
             "userConfig": {
-                "height": 91,
+                "height": null,
                 "layout|region": "north",
                 "title": "Search"
             },
-            "designerId": "3d57f9e2-7bcc-4f17-b3a0-d6450772fb1b"
+            "designerId": "3d57f9e2-7bcc-4f17-b3a0-d6450772fb1b",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Date",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fieldLabel": "Start",
+                        "format": "d.m.Y",
+                        "name": "myname"
+                    },
+                    "designerId": "ff0ad9db-0bd5-4328-baaa-3699fab6ce7c",
+                    "cn": [
+                        {
+                            "type": "basiceventbinding",
+                            "reference": {
+                                "name": "listeners",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "fn": "onDatefieldChange",
+                                "implHandler": [
+                                    "alert(field.name);",
+                                    ""
+                                ],
+                                "name": "change",
+                                "scope": "me"
+                            },
+                            "designerId": "7f9eb604-b423-4f93-84f8-15155b42377a"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "type": "Ext.grid.property.Grid",
