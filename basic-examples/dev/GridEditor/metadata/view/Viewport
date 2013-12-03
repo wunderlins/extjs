@@ -13,18 +13,19 @@
     "designerId": "f9aba745-02b9-4206-b93e-137f703e2070",
     "cn": [
         {
-            "type": "Ext.panel.Panel",
+            "type": "Ext.container.Container",
             "reference": {
                 "name": "items",
                 "type": "array"
             },
             "codeClass": null,
             "userConfig": {
-                "height": null,
+                "height": 150,
                 "layout|region": "north",
-                "title": "Search"
+                "layout|split": null,
+                "layout|splitterResize": null
             },
-            "designerId": "3d57f9e2-7bcc-4f17-b3a0-d6450772fb1b",
+            "designerId": "e7bde9b3-1ff2-4f5f-91f7-c212de7b072e",
             "cn": [
                 {
                     "type": "Ext.form.field.Date",
@@ -71,6 +72,7 @@
             "codeClass": null,
             "userConfig": {
                 "layout|region": "east",
+                "layout|split": true,
                 "source": [
                     "{\"Property 1\":\"String\",\"Property 2\":true,\"Property 3\":\"2013-11-28T18:53:44\",\"Property 4\":123}"
                 ],

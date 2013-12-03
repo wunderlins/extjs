@@ -26,9 +26,9 @@ Ext.define('GridEditor.view.Viewport', {
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'panel',
+                    xtype: 'container',
                     region: 'north',
-                    title: 'Search',
+                    height: 150,
                     items: [
                         {
                             xtype: 'datefield',
@@ -47,6 +47,7 @@ Ext.define('GridEditor.view.Viewport', {
                 {
                     xtype: 'propertygrid',
                     region: 'east',
+                    split: true,
                     width: 150,
                     title: 'Detail',
                     source: {
