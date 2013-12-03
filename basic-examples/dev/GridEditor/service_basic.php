@@ -124,6 +124,12 @@ class service_data extends enum {
 
 /**
  * Service parameter description
+ *
+ * This class is used to describe input parameters of a service method. It will 
+ * describe the name, the value and makes available input validation methods. 
+ *
+ * The methods validate an string input value to check if there is the 
+ * appropriate type in the string
  */
 class service_parameter extends enum {
 	const TYPE_BOOL   = 1;
@@ -194,13 +200,9 @@ class service_parameter extends enum {
 	
 	/**
 	 * check if input value from get/post is php array
-	 *
-	 * FIXME: the only sensible way to post objects is via json. how to handle 
-	 *        decoding. should this be done here or should we add a separate
-	 *        casting mechanism first?
 	 */
 	protected function is_object($value) {
-		return is_array($value);
+		return is_object($value);
 	}
 	
 	/**
@@ -208,24 +210,23 @@ class service_parameter extends enum {
 	 */
 	public function validate($value) {
 		switch($this->type) {
-			case 1: // bool
+			case service_parameter::TYPE_BOOL: // bool
 				return $this->is_bool($value);
 
-			case 2: // int
+			case service_parameter::TYPE_INT: // int
 				return $this->is_int($value);
 			
-			case 3: // float
+			case service_parameter::TYPE_FLOAT: // float
 				return $this->is_float($value);
 			
-			case 4: // string
+			case service_parameter::TYPE_STRING: // string
 				return ($value && !$this->is_object($value) && !$this->is_array($value));
 
-			case 5: // array
+			case service_parameter::TYPE_ARRAY: // array
 				return $this->is_array($value);
 			
-			case 6: // object
+			case service_parameter::TYPE_OBJECT: // object
 				return $this->is_object($value);
-			
 		}
 		
 		return false;
@@ -387,28 +388,45 @@ class service_basic {
 		$params = array();
 		foreach($api->param as $ix => $p) {
 			
+			// fetch parameters, GET always wins over POST
 			$value = NULL;
-			if(isset($_GET[$p->name])) 
-				$value = $_GET[$p->name];
+			if(isset($_POST[$p->name])) 
+				$value = $_POST[$p->name];
 			else if(isset($_GET[$p->name])) 
 				$value = $_GET[$p->name];
-			
+				
 			// parameter missing?
 			if ($value === NULL) {
 				$s->error(4, "Parameter ". $p->name ." missing!"); // exit 
 			}
 			
-			// TODO: type checking
-			//echo "$value : " . $p->type . " ";
-			//var_dump((int) $value);
-			//var_dump($value);
+			// if this is an object, we need to decode it first
+			if ($p->type == service_parameter::TYPE_OBJECT) {
+				$value = json_decode($value);
+				var_dump($value);
+			}
+			
+			// type checking
 			$valid = $p->validate($value);
-			//var_dump($valid);
 			if (!$valid) 
 				$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
-
+			
+			// type casts of input values
 			$params[$p->name] = $value;
+			switch ($p->type) {
+				case service_parameter::TYPE_BOOL:
+					$params[$p->name] = (strtolower($value) == "true" || $value == 1) ? 
+						true : false;
+					break;
+				case service_parameter::TYPE_INT:
+					$params[$p->name] = (int) $value;
+					break;
+				case service_parameter::TYPE_FLOAT:
+					$params[$p->name] = (float) $value;
+					break;
+			}
 		}
+		//var_dump($params);
 		
 		// execute function
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);

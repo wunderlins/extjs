@@ -21,7 +21,8 @@ class service extends service_basic {
 				"string"  => service_parameter::TYPE_STRING,
 				"float"   => service_parameter::TYPE_FLOAT,
 				"bool" => service_parameter::TYPE_BOOL,
-				"int" => service_parameter::TYPE_INT
+				"int" => service_parameter::TYPE_INT,
+				"object" => service_parameter::TYPE_OBJECT
 			),
 			"return" => service_data::TYPE_RECORDSET,
 			"desc" => "Returns a recordset of items"
