@@ -180,10 +180,8 @@ class service_parameter extends enum {
 	 * check if input value from get/post is float
 	 */
 	protected function is_float($value) {
-		if (strlen((float) $value) == strlen($value) && 
-		   (float) $value . "" == $value) {
+		if (preg_match("/[\.0-9]+/", $value))
 			return true;
-		}
 		return false;
 	}
 	
