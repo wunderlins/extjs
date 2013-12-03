@@ -130,6 +130,8 @@ class service_data extends enum {
  *
  * The methods validate an string input value to check if there is the 
  * appropriate type in the string
+ *
+ * read only!
  */
 class service_parameter extends enum {
 	const TYPE_BOOL   = 1;
@@ -141,6 +143,7 @@ class service_parameter extends enum {
 	
 	public $name = "";
 	public $type = NULL;
+	private $is_init = false;
 	
 	/**
 	 * constructor
@@ -154,6 +157,7 @@ class service_parameter extends enum {
 		
 		$this->name = $name;
 		$this->type = $type;
+		$this->is_init = true;
 	}
 	
 	/**
@@ -231,10 +235,13 @@ class service_parameter extends enum {
 		
 		return false;
 	}
+	
 }
 
 /**
  * Service api item
+ *
+ * This class is readonly, changing parameters is not desired at this point.
  */
 class service_api_item {
 	public $fn = "";
@@ -401,10 +408,8 @@ class service_basic {
 			}
 			
 			// if this is an object, we need to decode it first
-			if ($p->type == service_parameter::TYPE_OBJECT) {
+			if ($p->type == service_parameter::TYPE_OBJECT)
 				$value = json_decode($value);
-				var_dump($value);
-			}
 			
 			// type checking
 			$valid = $p->validate($value);
@@ -412,21 +417,8 @@ class service_basic {
 				$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
 			
 			// type casts of input values
-			$params[$p->name] = $value;
-			switch ($p->type) {
-				case service_parameter::TYPE_BOOL:
-					$params[$p->name] = (strtolower($value) == "true" || $value == 1) ? 
-						true : false;
-					break;
-				case service_parameter::TYPE_INT:
-					$params[$p->name] = (int) $value;
-					break;
-				case service_parameter::TYPE_FLOAT:
-					$params[$p->name] = (float) $value;
-					break;
-			}
+			$params[$p->name] = self::cast($p, $value);
 		}
-		//var_dump($params);
 		
 		// execute function
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);
@@ -456,6 +448,23 @@ class service_basic {
 		}
 		return null;
 	} 
+
+	/**
+	 * cast string to data type
+	 *
+	 * important: validate datatype first!, use $this->validate($value)
+	 */	
+	public static function cast(service_parameter $param, $value) {
+		switch ($param->type) {
+			case service_parameter::TYPE_BOOL:
+				return (strtolower($value) == "true" || $value == 1) ? true : false;
+			case service_parameter::TYPE_INT:
+				return (int) $value;
+			case service_parameter::TYPE_FLOAT:
+				return (float) $value;
+		}
+		return $value;
+	}
 }
 
 /*
