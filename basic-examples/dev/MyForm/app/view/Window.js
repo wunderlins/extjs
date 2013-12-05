@@ -131,7 +131,13 @@ Ext.define('MyForm.view.Window', {
                                 {
                                     xtype: 'button',
                                     width: 80,
-                                    text: 'Cancel'
+                                    text: 'Cancel',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onButtonClick1,
+                                            scope: me
+                                        }
+                                    }
                                 },
                                 {
                                     xtype: 'button',
@@ -153,6 +159,10 @@ Ext.define('MyForm.view.Window', {
         });
 
         me.callParent(arguments);
+    },
+
+    onButtonClick1: function(button, e, eOpts) {
+        MyForm.app.log("Cancel clicked");
     },
 
     onButtonClick: function(button, e, eOpts) {
