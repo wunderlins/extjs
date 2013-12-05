@@ -21,8 +21,7 @@ Ext.define('MyForm.view.Window', {
     height: 587,
     width: 458,
     layout: {
-        align: 'stretch',
-        type: 'vbox'
+        type: 'border'
     },
     title: 'My Window',
 
@@ -32,8 +31,18 @@ Ext.define('MyForm.view.Window', {
         Ext.applyIf(me, {
             items: [
                 {
+                    xtype: 'textfield',
+                    region: 'south',
+                    split: true,
+                    height: 150,
+                    id: 'console',
+                    fieldStyle: 'font-family: courier, fixed; white-space: pre ! important;',
+                    emptyText: 'Console'
+                },
+                {
                     xtype: 'form',
                     flex: 1,
+                    region: 'center',
                     layout: {
                         align: 'stretch',
                         type: 'vbox'
@@ -48,37 +57,45 @@ Ext.define('MyForm.view.Window', {
                             items: [
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Label'
+                                    fieldLabel: 'Name'
                                 },
                                 {
-                                    xtype: 'timefield',
-                                    fieldLabel: 'Label'
+                                    xtype: 'combobox',
+                                    fieldLabel: 'Language'
                                 },
                                 {
                                     xtype: 'numberfield',
-                                    fieldLabel: 'Label'
+                                    fieldLabel: 'Age'
                                 },
                                 {
                                     xtype: 'htmleditor',
                                     height: 150,
-                                    fieldLabel: 'Label'
+                                    fieldLabel: 'Bio',
+                                    enableAlignments: false,
+                                    enableFont: false,
+                                    enableFontSize: false,
+                                    enableSourceEdit: false
                                 },
                                 {
                                     xtype: 'datefield',
-                                    fieldLabel: 'Label'
+                                    fieldLabel: 'Birthdate'
                                 },
                                 {
                                     xtype: 'radiogroup',
                                     width: 400,
-                                    fieldLabel: 'Label',
+                                    fieldLabel: 'Sex',
                                     items: [
                                         {
                                             xtype: 'radiofield',
-                                            boxLabel: 'Box Label'
+                                            boxLabel: 'Female'
                                         },
                                         {
                                             xtype: 'radiofield',
-                                            boxLabel: 'Box Label'
+                                            boxLabel: 'Male'
+                                        },
+                                        {
+                                            xtype: 'radiofield',
+                                            boxLabel: 'Other'
                                         }
                                     ]
                                 }
@@ -94,11 +111,20 @@ Ext.define('MyForm.view.Window', {
                             items: [
                                 {
                                     xtype: 'button',
-                                    text: 'MyButton'
+                                    width: 80,
+                                    text: 'Cancel'
                                 },
                                 {
                                     xtype: 'button',
-                                    text: 'MyButton'
+                                    margins: '0 0 0 5',
+                                    width: 80,
+                                    text: 'Ok',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onButtonClick,
+                                            scope: me
+                                        }
+                                    }
                                 }
                             ]
                         }
@@ -108,6 +134,10 @@ Ext.define('MyForm.view.Window', {
         });
 
         me.callParent(arguments);
+    },
+
+    onButtonClick: function(button, e, eOpts) {
+        MyForm.app.log("line 2 ....");
     }
 
 });

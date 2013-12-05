@@ -20,13 +20,51 @@ Ext.Loader.setConfig({
 
 
 Ext.application({
+    id: 'MyForm',
     views: [
         'Window'
     ],
     name: 'MyForm',
 
+    log: function(txt) {
+        var c = Ext.getCmp("console");
+
+        var content = c.getValue();
+
+        // TODO: make sure it's not getting too long
+
+        // append text
+        c.setValue(content + "\n" + txt);
+
+        //c.addChildEls(txt);
+
+        // scroll down
+        c.scrollBy(0, 1, false);
+    },
+
     launch: function() {
         Ext.create('MyForm.view.Window', {renderTo: Ext.getBody()});
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+        this.log("test ...");
+
     }
 
 });

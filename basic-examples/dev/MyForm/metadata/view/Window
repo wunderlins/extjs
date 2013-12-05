@@ -10,17 +10,38 @@
             "true"
         ],
         "autoShow": true,
-        "container|align": "stretch",
         "designer|initialView": true,
         "designer|userAlias": "",
         "designer|userClassName": "Window",
         "height": 587,
-        "layout": "vbox",
+        "layout": "border",
         "title": "My Window",
         "width": 458
     },
     "designerId": "6fc722c0-d292-4a9e-8591-909f82afca1e",
     "cn": [
+        {
+            "type": "Ext.form.field.Text",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "emptyText": "Console",
+                "fieldLabel": null,
+                "fieldStyle": "font-family: courier, fixed; white-space: pre ! important;",
+                "height": 150,
+                "id": "console",
+                "layout|region": "south",
+                "layout|split": true,
+                "style": null
+            },
+            "configAlternates": {
+                "style": "string"
+            },
+            "designerId": "880dda0b-5dd6-4a7c-880a-513ca2c01752"
+        },
         {
             "type": "Ext.form.Panel",
             "reference": {
@@ -33,6 +54,7 @@
                 "container|align": "stretch",
                 "layout": "vbox",
                 "layout|flex": 1,
+                "layout|region": "center",
                 "title": null
             },
             "designerId": "64023b22-7d8a-4117-9709-f834fa7dc9b6",
@@ -60,19 +82,19 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Label"
+                                "fieldLabel": "Name"
                             },
                             "designerId": "321ac8cf-1c91-4b46-a990-9b79fb686495"
                         },
                         {
-                            "type": "Ext.form.field.Time",
+                            "type": "Ext.form.field.ComboBox",
                             "reference": {
                                 "name": "items",
                                 "type": "array"
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Label"
+                                "fieldLabel": "Language"
                             },
                             "designerId": "3ca5d62a-7215-4d04-afd2-361522ddbe6f"
                         },
@@ -84,7 +106,7 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Label"
+                                "fieldLabel": "Age"
                             },
                             "designerId": "4b42eb14-7508-4e72-8d2e-0051bcde49ff"
                         },
@@ -96,7 +118,11 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Label",
+                                "enableAlignments": false,
+                                "enableFont": false,
+                                "enableFontSize": false,
+                                "enableSourceEdit": false,
+                                "fieldLabel": "Bio",
                                 "height": 150
                             },
                             "designerId": "b9cafdb2-7671-4100-9b99-f380eccfff6d"
@@ -109,7 +135,7 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Label"
+                                "fieldLabel": "Birthdate"
                             },
                             "designerId": "cae225cc-36f4-4881-86ed-cc9d755d66ef"
                         },
@@ -121,7 +147,7 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Label",
+                                "fieldLabel": "Sex",
                                 "width": 400
                             },
                             "designerId": "3cf6a478-5fbc-4988-a72b-b2cf058ec9a3",
@@ -134,7 +160,7 @@
                                     },
                                     "codeClass": null,
                                     "userConfig": {
-                                        "boxLabel": "Box Label",
+                                        "boxLabel": "Female",
                                         "fieldLabel": null
                                     },
                                     "designerId": "438ca302-8070-403b-aafd-4aa2972f0a79"
@@ -147,10 +173,23 @@
                                     },
                                     "codeClass": null,
                                     "userConfig": {
-                                        "boxLabel": "Box Label",
+                                        "boxLabel": "Male",
                                         "fieldLabel": null
                                     },
                                     "designerId": "9f91b298-92cc-4455-b14c-b01973a3a28a"
+                                },
+                                {
+                                    "type": "Ext.form.field.Radio",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "boxLabel": "Other",
+                                        "fieldLabel": null
+                                    },
+                                    "designerId": "df4906e4-2704-4629-8005-0742de912781"
                                 }
                             ]
                         }
@@ -166,8 +205,10 @@
                     "userConfig": {
                         "container|align": "stretch",
                         "container|pack": "end",
+                        "container|padding": null,
                         "layout": "hbox",
-                        "layout|flex": null
+                        "layout|flex": null,
+                        "padding": null
                     },
                     "designerId": "212dfbc9-9664-4b8d-8bc3-4a0db4f89ac5",
                     "cn": [
@@ -179,7 +220,8 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "text": "MyButton"
+                                "text": "Cancel",
+                                "width": 80
                             },
                             "designerId": "10841d4d-56fc-4c28-bdce-da9241a6519b"
                         },
@@ -191,9 +233,31 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "text": "MyButton"
+                                "layout|margins": "0 0 0 5",
+                                "padding": null,
+                                "text": "Ok",
+                                "width": 80
                             },
-                            "designerId": "aa1bbe06-ef12-41d4-b89c-f585094b9a07"
+                            "designerId": "aa1bbe06-ef12-41d4-b89c-f585094b9a07",
+                            "cn": [
+                                {
+                                    "type": "basiceventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "onButtonClick",
+                                        "implHandler": [
+                                            "MyForm.app.log(\"line 2 ....\");"
+                                        ],
+                                        "name": "click",
+                                        "scope": "me"
+                                    },
+                                    "designerId": "a55f6476-4b79-445b-bd39-a6eac2de4854"
+                                }
+                            ]
                         }
                     ]
                 }

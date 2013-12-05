@@ -6,10 +6,78 @@
     },
     "codeClass": null,
     "userConfig": {
+        "id": "MyForm",
         "name": "MyForm",
         "views": [
             "Window"
         ]
     },
-    "designerId": "application"
+    "designerId": "application",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "txt"
+                ],
+                "fn": "log",
+                "implHandler": [
+                    "var c = Ext.getCmp(\"console\");",
+                    "",
+                    "var content = c.getValue();",
+                    "",
+                    "// TODO: make sure it's not getting too long",
+                    "",
+                    "// append text",
+                    "c.setValue(content + \"\\n\" + txt);",
+                    "",
+                    "//c.addChildEls(txt);",
+                    "",
+                    "// scroll down",
+                    "c.scrollBy(0, 1, false);"
+                ]
+            },
+            "designerId": "e2874073-4a43-466a-9870-3867b2e3ddb9"
+        },
+        {
+            "type": "fixedfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "launch",
+                "implHandler": [
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    "this.log(\"test ...\");",
+                    ""
+                ]
+            },
+            "designerId": "78ba97ff-fc27-4dfb-809f-d568c811215f"
+        }
+    ]
 }
