@@ -16,6 +16,7 @@
                     "cn": [
                         {
                             "id": "93a04e93-daa3-412c-9516-29a757ef6e41",
+                            "expanded": false,
                             "cn": [
                                 {
                                     "id": "321ac8cf-1c91-4b46-a990-9b79fb686495"
@@ -68,6 +69,32 @@
                 }
             ]
         },
+        "c865d4b7-6e39-4022-a850-fe4f670bab3f": {
+            "id": "c865d4b7-6e39-4022-a850-fe4f670bab3f",
+            "cn": [
+                {
+                    "id": "cb8bcfc3-770e-4cd4-9bef-ccdbd0ff6442"
+                },
+                {
+                    "id": "48f91584-c994-4f01-b096-145b6c21550b"
+                },
+                {
+                    "id": "d6d4152d-c5af-4a8c-b058-eda7d8cf4be1"
+                },
+                {
+                    "id": "2b2f45d8-1158-47e8-a55d-ff5f77041c27"
+                },
+                {
+                    "id": "d6d94642-9fb3-4120-8943-83e572c41d24"
+                },
+                {
+                    "id": "d8cc7563-d170-46dc-b012-82d7372d766b"
+                },
+                {
+                    "id": "2dd6d83f-c040-4135-b22f-035fb183cb16"
+                }
+            ]
+        },
         "7b746482-3d28-425a-a5e2-9476f196f025": {
             "id": "7b746482-3d28-425a-a5e2-9476f196f025"
         },
@@ -81,20 +108,21 @@
     "tabState": {
         "openTabs": [
             "6fc722c0-d292-4a9e-8591-909f82afca1e",
-            "application"
+            "application",
+            "c865d4b7-6e39-4022-a850-fe4f670bab3f"
         ]
     },
     "canvasState": {
-        "topInstance": null
-    },
-    "inspectorState": {
-        "topInstance": "6fc722c0-d292-4a9e-8591-909f82afca1e",
-        "selectedInstance": "a55f6476-4b79-445b-bd39-a6eac2de4854"
-    },
-    "codeState": {
         "topInstance": "6fc722c0-d292-4a9e-8591-909f82afca1e"
     },
-    "editMode": "code",
+    "inspectorState": {
+        "topInstance": null,
+        "selectedInstance": null
+    },
+    "codeState": {
+        "topInstance": null
+    },
+    "editMode": "design",
     "userSettings": {
         "no-cmd": true
     }

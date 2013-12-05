@@ -21,6 +21,9 @@ Ext.Loader.setConfig({
 
 Ext.application({
     id: 'MyForm',
+    models: [
+        'MyModel'
+    ],
     views: [
         'Window'
     ],
@@ -28,42 +31,25 @@ Ext.application({
 
     log: function(txt) {
         var c = Ext.getCmp("console");
+        c.setAutoScroll(true);
 
         var content = c.getValue();
 
         // TODO: make sure it's not getting too long
 
         // append text
-        c.setValue(content + "\n" + txt);
+        c.setValue(txt + "\n" + content);
 
         //c.addChildEls(txt);
 
         // scroll down
-        c.scrollBy(0, 1, false);
+        c.scrollBy(0, 20000, false);
     },
 
     launch: function() {
         Ext.create('MyForm.view.Window', {renderTo: Ext.getBody()});
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
-        this.log("test ...");
+        this.log("launch() ...");
+
 
     }
 

@@ -31,13 +31,12 @@ Ext.define('MyForm.view.Window', {
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'textfield',
+                    xtype: 'textareafield',
                     region: 'south',
                     split: true,
                     height: 150,
                     id: 'console',
-                    fieldStyle: 'font-family: courier, fixed; white-space: pre ! important;',
-                    emptyText: 'Console'
+                    fieldStyle: 'font-family: courier, fixed; white-space: pre ! important;'
                 },
                 {
                     xtype: 'form',
@@ -57,20 +56,28 @@ Ext.define('MyForm.view.Window', {
                             items: [
                                 {
                                     xtype: 'textfield',
-                                    fieldLabel: 'Name'
+                                    formBind: true,
+                                    fieldLabel: 'Name',
+                                    name: 'name'
                                 },
                                 {
                                     xtype: 'combobox',
-                                    fieldLabel: 'Language'
+                                    formBind: true,
+                                    fieldLabel: 'Language',
+                                    name: 'lang'
                                 },
                                 {
                                     xtype: 'numberfield',
-                                    fieldLabel: 'Age'
+                                    formBind: true,
+                                    fieldLabel: 'Age',
+                                    name: 'age'
                                 },
                                 {
                                     xtype: 'htmleditor',
+                                    formBind: true,
                                     height: 150,
                                     fieldLabel: 'Bio',
+                                    name: 'bio',
                                     enableAlignments: false,
                                     enableFont: false,
                                     enableFontSize: false,
@@ -78,7 +85,9 @@ Ext.define('MyForm.view.Window', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    fieldLabel: 'Birthdate'
+                                    formBind: true,
+                                    fieldLabel: 'Birthdate',
+                                    name: 'birthdate'
                                 },
                                 {
                                     xtype: 'radiogroup',
@@ -87,15 +96,25 @@ Ext.define('MyForm.view.Window', {
                                     items: [
                                         {
                                             xtype: 'radiofield',
-                                            boxLabel: 'Female'
+                                            formBind: true,
+                                            name: 'sex',
+                                            boxLabel: 'Female',
+                                            inputValue: '2'
                                         },
                                         {
                                             xtype: 'radiofield',
-                                            boxLabel: 'Male'
+                                            formBind: true,
+                                            name: 'sex',
+                                            boxLabel: 'Male',
+                                            inputValue: '1'
                                         },
                                         {
                                             xtype: 'radiofield',
-                                            boxLabel: 'Other'
+                                            formBind: true,
+                                            name: 'sex',
+                                            boxLabel: 'Other',
+                                            checked: true,
+                                            inputValue: '0'
                                         }
                                     ]
                                 }
@@ -137,7 +156,7 @@ Ext.define('MyForm.view.Window', {
     },
 
     onButtonClick: function(button, e, eOpts) {
-        MyForm.app.log("line 2 ....");
+        MyForm.app.log("OK clicked");
     }
 
 });

@@ -21,24 +21,27 @@
     "designerId": "6fc722c0-d292-4a9e-8591-909f82afca1e",
     "cn": [
         {
-            "type": "Ext.form.field.Text",
+            "type": "Ext.form.field.TextArea",
             "reference": {
                 "name": "items",
                 "type": "array"
             },
             "codeClass": null,
             "userConfig": {
-                "emptyText": "Console",
+                "emptyText": null,
                 "fieldLabel": null,
                 "fieldStyle": "font-family: courier, fixed; white-space: pre ! important;",
                 "height": 150,
                 "id": "console",
                 "layout|region": "south",
                 "layout|split": true,
+                "overflowX": null,
+                "overflowY": null,
                 "style": null
             },
             "configAlternates": {
-                "style": "string"
+                "style": "string",
+                "autoScroll": "boolean"
             },
             "designerId": "880dda0b-5dd6-4a7c-880a-513ca2c01752"
         },
@@ -82,7 +85,12 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Name"
+                                "fieldLabel": "Name",
+                                "formBind": true,
+                                "name": "name"
+                            },
+                            "configAlternates": {
+                                "autoScroll": "boolean"
                             },
                             "designerId": "321ac8cf-1c91-4b46-a990-9b79fb686495"
                         },
@@ -94,7 +102,9 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Language"
+                                "fieldLabel": "Language",
+                                "formBind": true,
+                                "name": "lang"
                             },
                             "designerId": "3ca5d62a-7215-4d04-afd2-361522ddbe6f"
                         },
@@ -106,7 +116,9 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Age"
+                                "fieldLabel": "Age",
+                                "formBind": true,
+                                "name": "age"
                             },
                             "designerId": "4b42eb14-7508-4e72-8d2e-0051bcde49ff"
                         },
@@ -123,7 +135,9 @@
                                 "enableFontSize": false,
                                 "enableSourceEdit": false,
                                 "fieldLabel": "Bio",
-                                "height": 150
+                                "formBind": true,
+                                "height": 150,
+                                "name": "bio"
                             },
                             "designerId": "b9cafdb2-7671-4100-9b99-f380eccfff6d"
                         },
@@ -135,7 +149,9 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fieldLabel": "Birthdate"
+                                "fieldLabel": "Birthdate",
+                                "formBind": true,
+                                "name": "birthdate"
                             },
                             "designerId": "cae225cc-36f4-4881-86ed-cc9d755d66ef"
                         },
@@ -161,7 +177,10 @@
                                     "codeClass": null,
                                     "userConfig": {
                                         "boxLabel": "Female",
-                                        "fieldLabel": null
+                                        "fieldLabel": null,
+                                        "formBind": true,
+                                        "inputValue": "2",
+                                        "name": "sex"
                                     },
                                     "designerId": "438ca302-8070-403b-aafd-4aa2972f0a79"
                                 },
@@ -174,7 +193,10 @@
                                     "codeClass": null,
                                     "userConfig": {
                                         "boxLabel": "Male",
-                                        "fieldLabel": null
+                                        "fieldLabel": null,
+                                        "formBind": true,
+                                        "inputValue": "1",
+                                        "name": "sex"
                                     },
                                     "designerId": "9f91b298-92cc-4455-b14c-b01973a3a28a"
                                 },
@@ -187,7 +209,11 @@
                                     "codeClass": null,
                                     "userConfig": {
                                         "boxLabel": "Other",
-                                        "fieldLabel": null
+                                        "checked": true,
+                                        "fieldLabel": null,
+                                        "formBind": true,
+                                        "inputValue": "0",
+                                        "name": "sex"
                                     },
                                     "designerId": "df4906e4-2704-4629-8005-0742de912781"
                                 }
@@ -250,7 +276,7 @@
                                     "userConfig": {
                                         "fn": "onButtonClick",
                                         "implHandler": [
-                                            "MyForm.app.log(\"line 2 ....\");"
+                                            "MyForm.app.log(\"OK clicked\");"
                                         ],
                                         "name": "click",
                                         "scope": "me"
