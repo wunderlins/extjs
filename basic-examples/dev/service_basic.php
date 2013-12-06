@@ -124,14 +124,6 @@ class service_data extends enum {
 
 /**
  * Service parameter description
- *
- * This class is used to describe input parameters of a service method. It will 
- * describe the name, the value and makes available input validation methods. 
- *
- * The methods validate an string input value to check if there is the 
- * appropriate type in the string
- *
- * read only!
  */
 class service_parameter extends enum {
 	const TYPE_BOOL   = 1;
@@ -143,7 +135,6 @@ class service_parameter extends enum {
 	
 	public $name = "";
 	public $type = NULL;
-	private $is_init = false;
 	
 	/**
 	 * constructor
@@ -157,7 +148,6 @@ class service_parameter extends enum {
 		
 		$this->name = $name;
 		$this->type = $type;
-		$this->is_init = true;
 	}
 	
 	/**
@@ -190,8 +180,10 @@ class service_parameter extends enum {
 	 * check if input value from get/post is float
 	 */
 	protected function is_float($value) {
-		if (preg_match("/[\.0-9]+/", $value))
+		if (strlen((float) $value) == strlen($value) && 
+		   (float) $value . "" == $value) {
 			return true;
+		}
 		return false;
 	}
 	
@@ -204,9 +196,13 @@ class service_parameter extends enum {
 	
 	/**
 	 * check if input value from get/post is php array
+	 *
+	 * FIXME: the only sensible way to post objects is via json. how to handle 
+	 *        decoding. should this be done here or should we add a separate
+	 *        casting mechanism first?
 	 */
 	protected function is_object($value) {
-		return is_object($value);
+		return is_array($value);
 	}
 	
 	/**
@@ -214,34 +210,32 @@ class service_parameter extends enum {
 	 */
 	public function validate($value) {
 		switch($this->type) {
-			case service_parameter::TYPE_BOOL: // bool
+			case 1: // bool
 				return $this->is_bool($value);
 
-			case service_parameter::TYPE_INT: // int
+			case 2: // int
 				return $this->is_int($value);
 			
-			case service_parameter::TYPE_FLOAT: // float
+			case 3: // float
 				return $this->is_float($value);
 			
-			case service_parameter::TYPE_STRING: // string
+			case 4: // string
 				return ($value && !$this->is_object($value) && !$this->is_array($value));
 
-			case service_parameter::TYPE_ARRAY: // array
+			case 5: // array
 				return $this->is_array($value);
 			
-			case service_parameter::TYPE_OBJECT: // object
+			case 6: // object
 				return $this->is_object($value);
+			
 		}
 		
 		return false;
 	}
-	
 }
 
 /**
  * Service api item
- *
- * This class is readonly, changing parameters is not desired at this point.
  */
 class service_api_item {
 	public $fn = "";
@@ -335,12 +329,21 @@ class service_basic {
 		if ($write) {
 			// TODO: instantiate a PD dbconn without wrecking output 
 			$this->dbconn_active = $this->dbconn_pd;
+			die("TBD: not yet imlpemented");
 		} else {
-		
-			include_once("../../../uhbs_config.php");
+			
+			if ($this->dbconn_read) {
+				$this->dbconn_active = $this->dbconn_read;
+				return $this->dbconn_read;
+			}
+			
+			include_once("../../../../uhbs_config.php");
+			global $ADODB_FETCH_MODE;
+			$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 			$this->dbconn_read = isop_dbconn();
+			$this->dbconn_read->Execute("alter session set nls_date_format='dd.mm.yyyy hh24:mi:ss'");
 			$this->dbconn_active = $this->dbconn_read;
-			return isop_dbconn();
+			return $this->dbconn_read;
 			
 		}
 		return $this->dbconn_active;
@@ -395,36 +398,38 @@ class service_basic {
 		$params = array();
 		foreach($api->param as $ix => $p) {
 			
-			// fetch parameters, GET always wins over POST
 			$value = NULL;
-			if(isset($_POST[$p->name])) 
-				$value = $_POST[$p->name];
+			if(isset($_GET[$p->name])) 
+				$value = $_GET[$p->name];
 			else if(isset($_GET[$p->name])) 
 				$value = $_GET[$p->name];
-				
+			
 			// parameter missing?
 			if ($value === NULL) {
 				$s->error(4, "Parameter ". $p->name ." missing!"); // exit 
 			}
 			
-			// if this is an object, we need to decode it first
-			if ($p->type == service_parameter::TYPE_OBJECT)
-				$value = json_decode($value);
-			
-			// type checking
+			// TODO: type checking
+			//echo "$value : " . $p->type . " ";
+			//var_dump((int) $value);
+			//var_dump($value);
 			$valid = $p->validate($value);
+			//var_dump($valid);
 			if (!$valid) 
 				$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
-			
-			// type casts of input values
-			$params[$p->name] = self::cast($p, $value);
+
+			$params[$p->name] = $value;
 		}
 		
 		// execute function
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);
+		if (!$ret) {
+			$s->error(6, "Result empty"); // exit 
+		}
 		
 		// handle result
 		$result = new service_result($ret->type);
+		
 		if ($ret->type == service_data::TYPE_RECORDSET) {
 			$result->root = $ret->data;
 			$result->total = $ret->num;
@@ -448,23 +453,6 @@ class service_basic {
 		}
 		return null;
 	} 
-
-	/**
-	 * cast string to data type
-	 *
-	 * important: validate datatype first!, use $this->validate($value)
-	 */	
-	public static function cast(service_parameter $param, $value) {
-		switch ($param->type) {
-			case service_parameter::TYPE_BOOL:
-				return (strtolower($value) == "true" || $value == 1) ? true : false;
-			case service_parameter::TYPE_INT:
-				return (int) $value;
-			case service_parameter::TYPE_FLOAT:
-				return (float) $value;
-		}
-		return $value;
-	}
 }
 
 /*
