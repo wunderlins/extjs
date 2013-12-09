@@ -8,9 +8,11 @@ function log(txt) {
 
 function show_console() {
 	if (DEBUGGING) {
-		Ext.getCmp("console").show();
-		var wh = Ext.getCmp("window").getHeight();
-		Ext.getCmp("window").setHeight(wh+Ext.getCmp("console").getHeight());
+		var console = Ext.getCmp("console")
+		var w = Ext.getCmp("window");
+		console.show();
+		var wh = w.getHeight();
+		w.setHeight(wh+console.getHeight());
 		//Ext.getCmp("window").doLayout();
 	}
 }
