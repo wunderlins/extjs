@@ -2,8 +2,10 @@ var DEBUGGING = 1;
 
 // log to console
 function log(txt) {
-	if (DEBUGGING)
+	if (DEBUGGING) {
 		MyForm.app.log(txt);
+		console.log(txt);
+	}
 }
 
 function show_console() {

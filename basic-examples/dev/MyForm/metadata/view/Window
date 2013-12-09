@@ -58,7 +58,7 @@
                 "bodyPadding": 10,
                 "container|align": "stretch",
                 "id": "form",
-                "jsonSubmit": true,
+                "jsonSubmit": null,
                 "layout": "vbox",
                 "layout|flex": 1,
                 "layout|region": "center",
@@ -302,7 +302,27 @@
                                     "userConfig": {
                                         "fn": "onButtonClick",
                                         "implHandler": [
-                                            "Ext.getCmp(\"form\").getForm().submit();"
+                                            "// submit data",
+                                            "log(\"Submitting ...\");",
+                                            "Ext.getCmp(\"form\").getForm().submit();",
+                                            "",
+                                            "",
+                                            "// get submitted values",
+                                            "log(\"fetching submitted data ...\");",
+                                            "Ext.Ajax.request({",
+                                            "    url: 'post.txt',",
+                                            "    success: function(conn, response, options) {",
+                                            "        log(\"loaded ...\");",
+                                            "        log(conn.responseText);",
+                                            "    },",
+                                            "    ",
+                                            "    failure: function(conn, response, options) {",
+                                            "        log(\"failed ...\");",
+                                            "        log(conn.responseText);",
+                                            "    }",
+                                            "});",
+                                            "",
+                                            ""
                                         ],
                                         "name": "click",
                                         "scope": "me"

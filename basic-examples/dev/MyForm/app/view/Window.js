@@ -50,7 +50,6 @@ Ext.define('MyForm.view.Window', {
                         type: 'vbox'
                     },
                     bodyPadding: 10,
-                    jsonSubmit: true,
                     method: 'POST',
                     timeout: 15,
                     url: 'dump.php',
@@ -173,7 +172,27 @@ Ext.define('MyForm.view.Window', {
     },
 
     onButtonClick: function(button, e, eOpts) {
+        // submit data
+        log("Submitting ...");
         Ext.getCmp("form").getForm().submit();
+
+
+        // get submitted values
+        log("fetching submitted data ...");
+        Ext.Ajax.request({
+            url: 'post.txt',
+            success: function(conn, response, options) {
+                log("loaded ...");
+                log(conn.responseText);
+            },
+
+            failure: function(conn, response, options) {
+                log("failed ...");
+                log(conn.responseText);
+            }
+        });
+
+
     }
 
 });

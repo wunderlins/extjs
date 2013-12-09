@@ -4,12 +4,14 @@
 ob_start();
 echo "== POST\n";
 var_dump($_POST);
+/*
 echo "\n== GET\n";
 var_dump($_GET);
 echo "\n== ENV\n";
 var_dump($_ENV);
 echo "\n== SERVER\n";
 var_dump($_SERVER);
+*/
 
 $c = ob_get_contents();
 ob_end_clean();

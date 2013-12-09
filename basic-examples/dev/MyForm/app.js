@@ -39,7 +39,7 @@ Ext.application({
         var content = c.getValue();
 
         // limit console length to N char
-        var length = 1000;
+        var length = 10000;
         if (content.length > length) {
             content = content.substr(0, length);
         }
