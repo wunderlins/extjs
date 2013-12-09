@@ -42,11 +42,16 @@ Ext.define('MyForm.view.Window', {
                     xtype: 'form',
                     flex: 1,
                     region: 'center',
+                    id: 'form',
                     layout: {
                         align: 'stretch',
                         type: 'vbox'
                     },
                     bodyPadding: 10,
+                    jsonSubmit: true,
+                    method: 'POST',
+                    timeout: 15,
+                    url: 'dump.php',
                     items: [
                         {
                             xtype: 'fieldcontainer',
@@ -85,7 +90,7 @@ Ext.define('MyForm.view.Window', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    formBind: true,
+                                    formBind: false,
                                     fieldLabel: 'Birthdate',
                                     name: 'birthdate'
                                 },
@@ -153,7 +158,13 @@ Ext.define('MyForm.view.Window', {
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    listeners: {
+                        success: {
+                            fn: me.onFormSuccess,
+                            scope: me
+                        }
+                    }
                 }
             ]
         });
@@ -166,7 +177,11 @@ Ext.define('MyForm.view.Window', {
     },
 
     onButtonClick: function(button, e, eOpts) {
-        MyForm.app.log("OK clicked");
+        Ext.getCmp("form").getForm().submit();
+    },
+
+    onFormSuccess: function(form, action) {
+        alert("done");
     }
 
 });

@@ -55,10 +55,15 @@
             "userConfig": {
                 "bodyPadding": 10,
                 "container|align": "stretch",
+                "id": "form",
+                "jsonSubmit": true,
                 "layout": "vbox",
                 "layout|flex": 1,
                 "layout|region": "center",
-                "title": null
+                "method": "POST",
+                "timeout": 15,
+                "title": null,
+                "url": "dump.php"
             },
             "designerId": "64023b22-7d8a-4117-9709-f834fa7dc9b6",
             "cn": [
@@ -150,7 +155,7 @@
                             "codeClass": null,
                             "userConfig": {
                                 "fieldLabel": "Birthdate",
-                                "formBind": true,
+                                "formBind": false,
                                 "name": "birthdate"
                             },
                             "designerId": "cae225cc-36f4-4881-86ed-cc9d755d66ef"
@@ -295,7 +300,7 @@
                                     "userConfig": {
                                         "fn": "onButtonClick",
                                         "implHandler": [
-                                            "MyForm.app.log(\"OK clicked\");"
+                                            "Ext.getCmp(\"form\").getForm().submit();"
                                         ],
                                         "name": "click",
                                         "scope": "me"
@@ -305,6 +310,27 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "type": "basiceventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "form",
+                            "action"
+                        ],
+                        "fn": "onFormSuccess",
+                        "implHandler": [
+                            "alert(\"done\");"
+                        ],
+                        "name": "success",
+                        "scope": "me"
+                    },
+                    "designerId": "a988da6b-d1c3-4ff5-a877-e82f6b3a4bd7"
                 }
             ]
         }
