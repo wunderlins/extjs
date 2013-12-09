@@ -13,7 +13,8 @@
         "designer|initialView": true,
         "designer|userAlias": "",
         "designer|userClassName": "Window",
-        "height": 587,
+        "height": 395,
+        "id": "window",
         "layout": "border",
         "title": "My Window",
         "width": 458
@@ -32,6 +33,7 @@
                 "fieldLabel": null,
                 "fieldStyle": "font-family: courier, fixed; white-space: pre ! important;",
                 "height": 150,
+                "hidden": true,
                 "id": "console",
                 "layout|region": "south",
                 "layout|split": true,
@@ -266,7 +268,7 @@
                                     "userConfig": {
                                         "fn": "onButtonClick1",
                                         "implHandler": [
-                                            "l(\"Cancel clicked\");"
+                                            "log(\"Cancel clicked\");"
                                         ],
                                         "name": "click",
                                         "scope": "me"

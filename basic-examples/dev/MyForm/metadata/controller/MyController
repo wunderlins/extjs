@@ -20,6 +20,8 @@
             "userConfig": {
                 "fn": "onLaunch",
                 "implHandler": [
+                    "show_console();",
+                    "",
                     "var defaultRecord = Ext.create('MyForm.model.MyModel', {",
                     "    id   : 1,",
                     "    name : \"Simon Wunderlin\",",

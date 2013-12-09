@@ -17,6 +17,8 @@ Ext.define('MyForm.controller.MyController', {
     extend: 'Ext.app.Controller',
 
     onLaunch: function() {
+        show_console();
+
         var defaultRecord = Ext.create('MyForm.model.MyModel', {
             id   : 1,
             name : "Simon Wunderlin",

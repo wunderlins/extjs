@@ -18,7 +18,8 @@ Ext.define('MyForm.view.Window', {
 
     autoRender: true,
     autoShow: true,
-    height: 587,
+    height: 395,
+    id: 'window',
     width: 458,
     layout: {
         type: 'border'
@@ -35,6 +36,7 @@ Ext.define('MyForm.view.Window', {
                     region: 'south',
                     split: true,
                     height: 150,
+                    hidden: true,
                     id: 'console',
                     fieldStyle: 'font-family: courier, fixed; white-space: pre ! important;'
                 },
@@ -167,7 +169,7 @@ Ext.define('MyForm.view.Window', {
     },
 
     onButtonClick1: function(button, e, eOpts) {
-        l("Cancel clicked");
+        log("Cancel clicked");
     },
 
     onButtonClick: function(button, e, eOpts) {
