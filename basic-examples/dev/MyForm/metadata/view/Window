@@ -155,7 +155,7 @@
                             "codeClass": null,
                             "userConfig": {
                                 "fieldLabel": "Birthdate",
-                                "formBind": false,
+                                "formBind": true,
                                 "name": "birthdate"
                             },
                             "designerId": "cae225cc-36f4-4881-86ed-cc9d755d66ef"
@@ -266,7 +266,7 @@
                                     "userConfig": {
                                         "fn": "onButtonClick1",
                                         "implHandler": [
-                                            "MyForm.app.log(\"Cancel clicked\");"
+                                            "l(\"Cancel clicked\");"
                                         ],
                                         "name": "click",
                                         "scope": "me"
@@ -310,27 +310,6 @@
                             ]
                         }
                     ]
-                },
-                {
-                    "type": "basiceventbinding",
-                    "reference": {
-                        "name": "listeners",
-                        "type": "array"
-                    },
-                    "codeClass": null,
-                    "userConfig": {
-                        "designer|params": [
-                            "form",
-                            "action"
-                        ],
-                        "fn": "onFormSuccess",
-                        "implHandler": [
-                            "alert(\"done\");"
-                        ],
-                        "name": "success",
-                        "scope": "me"
-                    },
-                    "designerId": "a988da6b-d1c3-4ff5-a877-e82f6b3a4bd7"
                 }
             ]
         }

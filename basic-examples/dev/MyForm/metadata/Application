@@ -6,6 +6,9 @@
     },
     "codeClass": null,
     "userConfig": {
+        "controllers": [
+            "MyController"
+        ],
         "id": "MyForm",
         "models": [
             "MyModel"
@@ -52,23 +55,6 @@
                 ]
             },
             "designerId": "e2874073-4a43-466a-9870-3867b2e3ddb9"
-        },
-        {
-            "type": "fixedfunction",
-            "reference": {
-                "name": "items",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "fn": "launch",
-                "implHandler": [
-                    "this.log(\"launch() ...\");",
-                    "",
-                    ""
-                ]
-            },
-            "designerId": "78ba97ff-fc27-4dfb-809f-d568c811215f"
         }
     ]
 }

@@ -1,0 +1,13 @@
+{
+    "type": "jsresource",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "js",
+        "url": "MyForm.global.js"
+    },
+    "designerId": "c94da3cd-43c8-4ae4-a11b-ac95439b0d38"
+}

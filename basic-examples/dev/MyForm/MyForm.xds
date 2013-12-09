@@ -30,14 +30,17 @@
             "6fc722c0-d292-4a9e-8591-909f82afca1e"
         ],
         "store": [],
-        "controller": [],
+        "controller": [
+            "ce0cffd3-b57b-4d3c-8d9e-82c36dea490c"
+        ],
         "model": [
             "c865d4b7-6e39-4022-a850-fe4f670bab3f"
         ],
         "resource": [
             "7b746482-3d28-425a-a5e2-9476f196f025",
             "8d86ba96-16fa-465b-a776-3c6887b6ac62",
-            "08ca91d4-fa67-45cf-9f37-9b8665be6c7c"
+            "08ca91d4-fa67-45cf-9f37-9b8665be6c7c",
+            "c94da3cd-43c8-4ae4-a11b-ac95439b0d38"
         ],
         "app": [
             "application"

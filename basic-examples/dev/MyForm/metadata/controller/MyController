@@ -1,0 +1,42 @@
+{
+    "type": "Ext.app.Controller",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "MyController"
+    },
+    "designerId": "ce0cffd3-b57b-4d3c-8d9e-82c36dea490c",
+    "cn": [
+        {
+            "type": "fixedfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "onLaunch",
+                "implHandler": [
+                    "var defaultRecord = Ext.create('MyForm.model.MyModel', {",
+                    "    id   : 1,",
+                    "    name : \"Simon Wunderlin\",",
+                    "    age  : 39,",
+                    "    lang : \"Eng\",",
+                    "    bio  : \"Blah ...\",",
+                    "    birthdate: \"03.12.1974\",",
+                    "    sex: 1",
+                    "});",
+                    "",
+                    "Ext.getCmp(\"form\").loadRecord(defaultRecord);",
+                    "console.log(\"loaded default record\");",
+                    "console.log(defaultRecord);",
+                    ""
+                ]
+            },
+            "designerId": "66068b25-c133-4c34-af09-5f04afd4b088"
+        }
+    ]
+}

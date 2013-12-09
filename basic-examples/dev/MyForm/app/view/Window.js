@@ -90,7 +90,7 @@ Ext.define('MyForm.view.Window', {
                                 },
                                 {
                                     xtype: 'datefield',
-                                    formBind: false,
+                                    formBind: true,
                                     fieldLabel: 'Birthdate',
                                     name: 'birthdate'
                                 },
@@ -158,13 +158,7 @@ Ext.define('MyForm.view.Window', {
                                 }
                             ]
                         }
-                    ],
-                    listeners: {
-                        success: {
-                            fn: me.onFormSuccess,
-                            scope: me
-                        }
-                    }
+                    ]
                 }
             ]
         });
@@ -173,15 +167,11 @@ Ext.define('MyForm.view.Window', {
     },
 
     onButtonClick1: function(button, e, eOpts) {
-        MyForm.app.log("Cancel clicked");
+        l("Cancel clicked");
     },
 
     onButtonClick: function(button, e, eOpts) {
         Ext.getCmp("form").getForm().submit();
-    },
-
-    onFormSuccess: function(form, action) {
-        alert("done");
     }
 
 });

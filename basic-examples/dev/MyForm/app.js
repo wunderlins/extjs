@@ -27,6 +27,9 @@ Ext.application({
     views: [
         'Window'
     ],
+    controllers: [
+        'MyController'
+    ],
     name: 'MyForm',
 
     log: function(txt) {
@@ -53,9 +56,6 @@ Ext.application({
 
     launch: function() {
         Ext.create('MyForm.view.Window', {renderTo: Ext.getBody()});
-        this.log("launch() ...");
-
-
     }
 
 });
