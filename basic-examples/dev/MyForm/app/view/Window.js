@@ -149,10 +149,21 @@ Ext.define('MyForm.view.Window', {
                                     xtype: 'button',
                                     margins: '0 0 0 5',
                                     width: 80,
-                                    text: 'Ok',
+                                    text: 'submit()',
                                     listeners: {
                                         click: {
                                             fn: me.onButtonClick,
+                                            scope: me
+                                        }
+                                    }
+                                },
+                                {
+                                    xtype: 'button',
+                                    margins: '0 0 0 10',
+                                    text: 'Save',
+                                    listeners: {
+                                        click: {
+                                            fn: me.onButtonClick2,
                                             scope: me
                                         }
                                     }
@@ -192,6 +203,13 @@ Ext.define('MyForm.view.Window', {
             }
         });
 
+
+    },
+
+    onButtonClick2: function(button, e, eOpts) {
+        with (Ext.getCmp("form").getForm()) {
+            console.log(this);
+        };
 
     }
 

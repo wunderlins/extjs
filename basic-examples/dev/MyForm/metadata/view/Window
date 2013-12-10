@@ -287,7 +287,7 @@
                             "userConfig": {
                                 "layout|margins": "0 0 0 5",
                                 "padding": null,
-                                "text": "Ok",
+                                "text": "submit()",
                                 "width": 80
                             },
                             "designerId": "aa1bbe06-ef12-41d4-b89c-f585094b9a07",
@@ -315,7 +315,7 @@
                                             "        log(\"loaded ...\");",
                                             "        log(conn.responseText);",
                                             "    },",
-                                            "    ",
+                                            "",
                                             "    failure: function(conn, response, options) {",
                                             "        log(\"failed ...\");",
                                             "        log(conn.responseText);",
@@ -328,6 +328,43 @@
                                         "scope": "me"
                                     },
                                     "designerId": "a55f6476-4b79-445b-bd39-a6eac2de4854"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Ext.button.Button",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "layout|flex": null,
+                                "layout|margins": "0 0 0 10",
+                                "padding": null,
+                                "text": "Save"
+                            },
+                            "designerId": "b6313ba3-39c8-44c4-979b-0886769211c3",
+                            "cn": [
+                                {
+                                    "type": "basiceventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "onButtonClick2",
+                                        "implHandler": [
+                                            "with (Ext.getCmp(\"form\").getForm()) {",
+                                            "    console.log(this);",
+                                            "};",
+                                            ""
+                                        ],
+                                        "name": "click",
+                                        "scope": "me"
+                                    },
+                                    "designerId": "01704a47-4478-4c35-bc1b-b1bdbc615798"
                                 }
                             ]
                         }
