@@ -1,0 +1,38 @@
+{
+    "name": "refTest",
+    "settings": {
+        "cmd": {},
+        "canvasControls": {
+            "viewportSize": {
+                "name": "Auto Expand",
+                "builtIn": true,
+                "height": null,
+                "width": null
+            }
+        },
+        "urlPrefix": "",
+        "exportPath": ""
+    },
+    "xdsVersion": "3.0.0",
+    "xdsBuild": 1337,
+    "schemaVersion": 1,
+    "upgradeVersion": 300000000003,
+    "framework": "ext42",
+    "viewOrderMap": {
+        "view": [
+            "01f2e2ee-8ede-4963-a397-8d28cf3cfe6a"
+        ],
+        "store": [],
+        "controller": [
+            "abc047d6-64a0-41c7-9ad5-54c4c67c899c"
+        ],
+        "model": [],
+        "resource": [
+            "26b0e569-130e-4aaf-8f9e-0c4ff4f180ae",
+            "0eab99aa-76b8-4c8e-b979-8280340981fa"
+        ],
+        "app": [
+            "application"
+        ]
+    }
+}

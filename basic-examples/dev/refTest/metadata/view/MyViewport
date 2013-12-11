@@ -1,0 +1,142 @@
+{
+    "type": "Ext.container.Viewport",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|initialView": true,
+        "designer|userClassName": "MyViewport",
+        "layout": "fit"
+    },
+    "designerId": "01f2e2ee-8ede-4963-a397-8d28cf3cfe6a",
+    "cn": [
+        {
+            "type": "Ext.form.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "bodyPadding": 10,
+                "itemId": "FirstForm",
+                "title": "My Form"
+            },
+            "designerId": "a6b4b198-7e7d-480d-bb1f-a82bf675facb",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fieldLabel": "Name",
+                        "layout|anchor": "100%"
+                    },
+                    "designerId": "20073bef-a965-4181-99b9-1b5e1455607d"
+                },
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fieldLabel": "Vorname",
+                        "layout|anchor": "100%"
+                    },
+                    "designerId": "ee96fd37-ebb1-4f56-9fa0-ad625f2c9b39"
+                },
+                {
+                    "type": "Ext.form.field.ComboBox",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fieldLabel": "Land",
+                        "layout|anchor": "100%"
+                    },
+                    "designerId": "742ac1c0-dff6-4289-8272-aa9e4dd1db08"
+                },
+                {
+                    "type": "Ext.form.field.File",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fieldLabel": "File",
+                        "layout|anchor": "100%"
+                    },
+                    "designerId": "7b854b35-f0b0-4239-8dc1-bca4eae651b7"
+                },
+                {
+                    "type": "Ext.form.field.HtmlEditor",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fieldLabel": "Kommentar",
+                        "height": 150,
+                        "layout|anchor": "100%"
+                    },
+                    "designerId": "f08acf4b-e635-4f0a-a229-b5bb85060953"
+                },
+                {
+                    "type": "Ext.container.Container",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "container|align": "stretch",
+                        "container|defaultMargins": [
+                            "{\"top\":0,\"right\":0,\"bottom\":0,\"left\":5}"
+                        ],
+                        "container|pack": "end",
+                        "layout": "hbox"
+                    },
+                    "designerId": "c43af967-a3d8-4db4-855f-c873e27bc36d",
+                    "cn": [
+                        {
+                            "type": "Ext.button.Button",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "text": "Cancel"
+                            },
+                            "designerId": "7ac6c9f4-e9a6-4fbe-b751-30440c45602b"
+                        },
+                        {
+                            "type": "Ext.button.Button",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "itemId": "btnSave",
+                                "text": "Save"
+                            },
+                            "designerId": "706ddde1-a0bf-4b3a-9b0f-e9efdf04330f"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
