@@ -3,7 +3,6 @@
  * JSon service classes for ExtJS Data stores
  *
  * TODO: extend metacatalog to describe resultsets
- * TODO: add global PHP error handling
  * 
  */
 
@@ -12,13 +11,63 @@ error_reporting(E_ALL);
 
 // catch all exceptions
 function exception_handler($exception) {
-	var_dump($exception);
+	//var_dump($exception);
 	$c = $exception->getCode();
 	$m = $exception->getMessage();
 	service_basic::error($c, $m);
 }
-
 set_exception_handler('exception_handler');
+
+// inlude classes by class name
+/*
+function __autoload($class_name) {
+	include $class_name . '.class.php';
+}
+*/
+
+// set global error handler
+function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars) {
+	// timestamp for the error entry
+	$dt = date("Y-m-d H:i:s (T)");
+
+	// define an assoc array of error string
+	// in reality the only entries we should
+	// consider are E_WARNING, E_NOTICE, E_USER_ERROR,
+	// E_USER_WARNING and E_USER_NOTICE
+	$errortype = array (
+		          E_ERROR              => 'Error',
+		          E_WARNING            => 'Warning',
+		          E_PARSE              => 'Parsing Error',
+		          E_NOTICE             => 'Notice',
+		          E_CORE_ERROR         => 'Core Error',
+		          E_CORE_WARNING       => 'Core Warning',
+		          E_COMPILE_ERROR      => 'Compile Error',
+		          E_COMPILE_WARNING    => 'Compile Warning',
+		          E_USER_ERROR         => 'User Error',
+		          E_USER_WARNING       => 'User Warning',
+		          E_USER_NOTICE        => 'User Notice',
+		          E_STRICT             => 'Runtime Notice',
+		          E_RECOVERABLE_ERROR  => 'Catchable Fatal Error'
+		          );
+	// set of errors for which a var trace will be saved
+	$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
+	/*
+	$err = "<errorentry>\n";
+	$err .= "\t<datetime>" . $dt . "</datetime>\n";
+	$err .= "\t<errornum>" . $errno . "</errornum>\n";
+	$err .= "\t<errortype>" . $errortype[$errno] . "</errortype>\n";
+	$err .= "\t<errormsg>" . $errmsg . "</errormsg>\n";
+	$err .= "\t<scriptname>" . $filename . "</scriptname>\n";
+	$err .= "\t<scriptlinenum>" . $linenum . "</scriptlinenum>\n";
+
+	if (in_array($errno, $user_errors)) {
+		  $err .= "\t<vartrace>" . wddx_serialize_value($vars, "Variables") . "</vartrace>\n";
+	}
+	$err .= "</errorentry>\n\n";
+	*/
+	service_basic::error($errno, $errmsg, $filename, $linenum, $vars);
+}
+$old_error_handler = set_error_handler("userErrorHandler");
 
 /**
  * all constants are used for enumeration
@@ -68,12 +117,19 @@ class service_result {
  * Standard Error message for json data stores
  */
 class service_error {
-	public $code    = 0;
-	public $message = "";
+	public $code     = 0;
+	public $message  = "";
+	public $filename = NULL;
+	public $linenum  = NULL;
+	public $vars     = NULL;
 	
-	function __construct($code, $message) {
+	function __construct($code, $message, $filename=NULL, 
+	                     $linenum=NULL, $vars=NULL) {
 		$this->code    = $code;
 		$this->message = $message;
+		if ($filename !== NULL) $this->filename = $filename;
+		if ($linenum  !== NULL) $this->linenum  = $linenum;
+		if ($vars     !== NULL) $this->vars     = $vars;
 	}
 }
 
@@ -355,9 +411,10 @@ class service_basic {
 	 * This is a convenience function to handle errors. It will send a json 
 	 * response, and abort the script with $code as exit code.
 	 */
-	public static function error($code, $message) {
+	public static function error($code, $message, $filename=NULL, 
+	                             $linenum=NULL, $vars=NULL) {
 		$r = new service_result(null);
-		$r->error = new service_error($code, $message);
+		$r->error = new service_error($code, $message, $filename, $linenum, $vars);
 		$r->success = false;
 		
 		self::serve($r);
@@ -434,8 +491,11 @@ class service_basic {
 	 */
 	public static function main() {
 		
-		// testing error handling
-		throw new Exception("General Error, need new leader!", 12);		
+		// test Exception handling
+		//throw new Exception("General Error, need new leader!", 12);
+		
+		// test error handling
+		//trigger_error("this is an error m8", E_USER_ERROR);
 		
 		$s = new service();
 		//var_dump($s);
