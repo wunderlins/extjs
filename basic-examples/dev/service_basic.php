@@ -1,6 +1,10 @@
 <?php
 /**
  * JSon service classes for ExtJS Data stores
+ *
+ * TODO: allow empty result type (insert/update) with success only
+ * TODO: extend metacatalog to describe resultsets
+ * TODO: add global PHP error handling
  */
 
 error_reporting(E_ALL);
@@ -135,19 +139,23 @@ class service_parameter extends enum {
 	
 	public $name = "";
 	public $type = NULL;
+	public $required = false;
+	public $notnull = false;
 	
 	/**
 	 * constructor
 	 * 
 	 * $type must be of self::TYPE_* or the constructor will return null
 	 */
-	function __construct($name, $type) {
+	function __construct($name, $type, $required=true, $notnull=true) {
 		// check if we have a valid type
 		if (!in_array($type, $this->ENUM))
 			return null;
 		
 		$this->name = $name;
 		$this->type = $type;
+		$this->required = $name;
+		$this->notnull = $notnull;
 	}
 	
 	/**
@@ -180,11 +188,7 @@ class service_parameter extends enum {
 	 * check if input value from get/post is float
 	 */
 	protected function is_float($value) {
-		if (strlen((float) $value) == strlen($value) && 
-		   (float) $value . "" == $value) {
-			return true;
-		}
-		return false;
+		return preg_match("/^[0-9\.]+$/", $value);
 	}
 	
 	/**
@@ -303,14 +307,16 @@ class service_basic {
 		if (!isset($meta["fn"]) || !isset($meta["return"]) || !isset($meta["desc"]))
 			return null;
 		
+		/*
 		$param = array();
 		if (isset($meta["param"])) {
 			foreach($meta["param"] as $n => $v) {
 				$param[] = new service_parameter($n, $v);
 			}
 		}
+		*/
 
-		$a = new service_api_item($meta["fn"], $param, 
+		$a = new service_api_item($meta["fn"], $meta["param"], 
 		                          $meta["return"], 
 		                          $meta["desc"]);
 		$this->api[] = $a;
