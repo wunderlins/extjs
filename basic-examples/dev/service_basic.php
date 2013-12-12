@@ -4,6 +4,7 @@
  *
  * TODO: extend metacatalog to describe resultsets
  * TODO: add global PHP error handling
+ * 
  */
 
 error_reporting(E_ALL);

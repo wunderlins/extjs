@@ -21,7 +21,6 @@ class service extends service_basic {
 				new service_parameter("string", service_parameter::TYPE_STRING),
 				new service_parameter("float",  service_parameter::TYPE_FLOAT),
 				new service_parameter("bool",   service_parameter::TYPE_BOOL),
-				// FIXME: when sending empty string and bool param is required, it won't trigger an error'
 				new service_parameter("int",    service_parameter::TYPE_INT, false),
 				new service_parameter("object", service_parameter::TYPE_OBJECT, false),
 			),
