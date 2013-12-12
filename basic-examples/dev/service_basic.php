@@ -7,7 +7,18 @@
  * 
  */
 
+// catch all common errors
 error_reporting(E_ALL);
+
+// catch all exceptions
+function exception_handler($exception) {
+	var_dump($exception);
+	$c = $exception->getCode();
+	$m = $exception->getMessage();
+	service_basic::error($c, $m);
+}
+
+set_exception_handler('exception_handler');
 
 /**
  * all constants are used for enumeration
@@ -284,7 +295,7 @@ class service_parameter extends enum {
 					return json_decode($value);
 				if (is_object($value))
 					return $value;
-				
+				throw new Exception("Failed to cast Object ".$this->name);
 		}
 		
 		return null;
@@ -344,7 +355,7 @@ class service_basic {
 	 * This is a convenience function to handle errors. It will send a json 
 	 * response, and abort the script with $code as exit code.
 	 */
-	protected function error($code, $message) {
+	public static function error($code, $message) {
 		$r = new service_result(null);
 		$r->error = new service_error($code, $message);
 		$r->success = false;
@@ -422,6 +433,10 @@ class service_basic {
 	 * This method should be called once the service is declared
 	 */
 	public static function main() {
+		
+		// testing error handling
+		throw new Exception("General Error, need new leader!", 12);		
+		
 		$s = new service();
 		//var_dump($s);
 		
