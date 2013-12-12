@@ -470,7 +470,7 @@ class service_basic {
 			
 			// required?
 			if (!$found && $p->required) {
-				print_r($p);
+				//print_r($p);
 				$s->error(4, "Parameter ". $p->name ." missing!"); // exit 
 			}
 			
