@@ -140,22 +140,20 @@ class service_parameter extends enum {
 	public $name = "";
 	public $type = NULL;
 	public $required = false;
-	public $notnull = false;
 	
 	/**
 	 * constructor
 	 * 
 	 * $type must be of self::TYPE_* or the constructor will return null
 	 */
-	function __construct($name, $type, $required=true, $notnull=true) {
+	function __construct($name, $type, $required=true) {
 		// check if we have a valid type
 		if (!in_array($type, $this->ENUM))
 			return null;
 		
 		$this->name = $name;
 		$this->type = $type;
-		$this->required = $name;
-		$this->notnull = $notnull;
+		$this->required = $required;
 	}
 	
 	/**
@@ -224,7 +222,7 @@ class service_parameter extends enum {
 				return $this->is_float($value);
 			
 			case 4: // string
-				return ($value && !$this->is_object($value) && !$this->is_array($value));
+				return (!$this->is_object($value) && !$this->is_array($value));
 
 			case 5: // array
 				return $this->is_array($value);
@@ -401,33 +399,47 @@ class service_basic {
 		//
 		// get metadata about this api call, check if all parameters are submitted 
 		// and if their data type is apropriate
+		//
+		// submitted parameters must match their type. empty values are not allowed 
+		// for submitted parameters. name="" is illegal. Omit the parameter if empty
+		// (works only for parameters which are not required).
+		//
 		$params = array();
 		foreach($api->param as $ix => $p) {
 			
 			$value = NULL;
+			$found = true;
 			if(isset($_GET[$p->name])) 
 				$value = $_GET[$p->name];
 			else if(isset($_GET[$p->name])) 
 				$value = $_GET[$p->name];
+			else
+				$found = false;
 			
-			// parameter missing?
-			if ($value === NULL) {
+			// required?
+			if (!$found && $p->required) {
+				print_r($p);
 				$s->error(4, "Parameter ". $p->name ." missing!"); // exit 
 			}
 			
-			// TODO: type checking
-			//echo "$value : " . $p->type . " ";
-			//var_dump((int) $value);
+			// if empty and string, set NULL to "" again
+			if($value === NULL && $p->type == service_parameter::TYPE_STRING)
+				$value = "";
 			//var_dump($value);
-			$valid = $p->validate($value);
-			//var_dump($valid);
-			if (!$valid) 
-				$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
-
+			
+			// type checking
+			if ($found) {
+				$valid = $p->validate($value);
+				if (!$valid) 
+					$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
+			}
+			
+			// CAVE: if not provided, value is set to NULL
 			$params[$p->name] = $value;
 		}
 		
 		// execute function
+		// FIXME: implement simple result type for update/insert methods
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);
 		if (!$ret) {
 			$s->error(6, "Result empty"); // exit 
@@ -460,16 +472,5 @@ class service_basic {
 		return null;
 	} 
 }
-
-/*
-class service_model {
-	protected $fields = null;
-	protected $validations = null;
-}
-
-class service_model_field {
-
-}
-*/
 
 ?>
