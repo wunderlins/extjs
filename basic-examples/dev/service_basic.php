@@ -2,7 +2,6 @@
 /**
  * JSon service classes for ExtJS Data stores
  *
- * TODO: allow empty result type (insert/update) with success only
  * TODO: extend metacatalog to describe resultsets
  * TODO: add global PHP error handling
  */
@@ -72,6 +71,8 @@ class service_error {
 class service_data extends enum {
 	const TYPE_RECORDSET = 1;
 	const TYPE_RECORD    = 2;
+	const TYPE_SUCCESS   = 3;
+	
 	protected $data = array();
 	protected $num  = null;
 	protected $type = null;
@@ -89,7 +90,8 @@ class service_data extends enum {
 	 * used for multi record results
 	 */
 	public function add_record(array $rec) {
-		if ($this->type == self::TYPE_RECORD)
+		if ($this->type == self::TYPE_RECORD || 
+		    $this->type == self::TYPE_SUCCESS)
 			return false;
 		
 		$this->data[] = $rec;
@@ -103,27 +105,41 @@ class service_data extends enum {
 	 * used for single record results
 	 */
 	public function set_record(array $rec) {
-		if ($this->type == self::TYPE_RECORDSET)
+		if ($this->type == self::TYPE_RECORDSET || 
+		    $this->type == self::TYPE_SUCCESS)
 			return false;
 		
 		$this->data = $rec;
-		$this->num = null;
 		return true;
 	}
 	
 	/**
-	 * replace result with this record
+	 * replace result with these records
 	 * 
-	 * used for single record results
+	 * used for multiple record results
 	 */
 	public function set_records(array $recs) {
-		if ($this->type == self::TYPE_RECORD)
+		if ($this->type == self::TYPE_RECORD || 
+		    $this->type == self::TYPE_SUCCESS)
 			return false;
 		
 		$this->data = $recs;
 		$this->num = sizeof($recs);
 		return true;
 	}
+	
+	/**
+	 * set success exit code
+	 */
+	public function set_success($code = 0) {
+		if ($this->type == self::TYPE_RECORD || 
+		    $this->type == self::TYPE_RECORDSET)
+			return false;
+		
+		$this->data = $code;
+		return true;
+	}
+
 }
 
 /**
@@ -197,14 +213,12 @@ class service_parameter extends enum {
 	}
 	
 	/**
-	 * check if input value from get/post is php array
+	 * check if input value from get/post is a json object
 	 *
-	 * FIXME: the only sensible way to post objects is via json. how to handle 
-	 *        decoding. should this be done here or should we add a separate
-	 *        casting mechanism first?
+	 * parse if needed
 	 */
 	protected function is_object($value) {
-		return is_array($value);
+		return is_object($value);
 	}
 	
 	/**
@@ -233,6 +247,42 @@ class service_parameter extends enum {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * cast from POST/GET string to native data type
+	 *
+	 * Strings and arrays are not casted, they should be set up by php properly 
+	 * already, whereis this might not be true for array elements.
+	 *
+	 * object should be posted via json and therefore should have proper types.
+	 */
+	public function cast($value) {
+		switch($this->type) {
+			case 1: // bool
+				return (bool) $value;
+
+			case 2: // int
+				return (int) $value;
+			
+			case 3: // float
+				return (float) $value;
+			
+			case 4: // string
+				return $value;
+
+			case 5: // array
+				return $value;
+			
+			case 6: // object
+				if (is_string($value))
+					return json_decode($value);
+				if (is_object($value))
+					return $value;
+				
+		}
+		
+		return null;
 	}
 }
 
@@ -294,7 +344,7 @@ class service_basic {
 		$r->error = new service_error($code, $message);
 		$r->success = false;
 		
-		$this->serve($r);
+		self::serve($r);
 		exit($code);
 	}
 	
@@ -356,7 +406,7 @@ class service_basic {
 	/**
 	 * serve result
 	 */
-	public function serve(service_result $res) {
+	public static function serve(service_result $res) {
 		header("Content-type: application/json");
 		print(json_encode($res));
 	}
@@ -425,7 +475,9 @@ class service_basic {
 			// if empty and string, set NULL to "" again
 			if($value === NULL && $p->type == service_parameter::TYPE_STRING)
 				$value = "";
-			//var_dump($value);
+			
+			// cast input values. all but array and string
+			$value = $p->cast($value);
 			
 			// type checking
 			if ($found) {
@@ -439,7 +491,6 @@ class service_basic {
 		}
 		
 		// execute function
-		// FIXME: implement simple result type for update/insert methods
 		$ret = call_user_func_array(array($s, "call_".$fn), $params);
 		if (!$ret) {
 			$s->error(6, "Result empty"); // exit 

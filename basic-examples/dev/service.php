@@ -21,7 +21,8 @@ class service extends service_basic {
 				new service_parameter("string", service_parameter::TYPE_STRING),
 				new service_parameter("float",  service_parameter::TYPE_FLOAT),
 				new service_parameter("bool",   service_parameter::TYPE_BOOL),
-				new service_parameter("int",    service_parameter::TYPE_INT, false)
+				new service_parameter("int",    service_parameter::TYPE_INT, false),
+				new service_parameter("object", service_parameter::TYPE_OBJECT, false),
 			),
 			"return" => service_data::TYPE_RECORDSET,
 			"desc" => "Returns a recordset of items"
@@ -34,14 +35,21 @@ class service extends service_basic {
 			"desc" => "Returns one record"
 		));
 		
-		
-		// FIXME: implement better return description. Describe all 
-		//        columns: name/type/format
 		$this->add_api(array(
 			"fn" => "get_op",
 			"param" => array(),
 			"return" => service_data::TYPE_RECORDSET,
 			"desc" => "Returns a list of patients"
+		));
+		
+		$this->add_api(array(
+			"fn" => "save",
+			"param" => array(
+				new service_parameter("name", service_parameter::TYPE_STRING),
+				new service_parameter("age",    service_parameter::TYPE_INT, false)
+			),
+			"return" => service_data::TYPE_SUCCESS,
+			"desc" => "Try to store a record and indicate success back to the client."
 		));
 		
 		parent::__construct($config);
@@ -50,14 +58,47 @@ class service extends service_basic {
 	/**
 	 * api get list of items
 	 */
-	public function call_get_list($sort, $dir, $start, $count) {
+	public function call_get_list($string, $float, $bool, $int, $object) {
 		$data = new service_data(service_data::TYPE_RECORDSET);
 	
-		$data->set_records(array(
-			array("name" => "name1", "value" => "value1"),
-			array("name" => "name2", "value" => "value2"),
-			array("name" => "name3", "value" => "value3"),
-			array("name" => "name4", "value" => "value4")
+		$data->add_record(array(
+			array(
+				"string" => $string, 
+				"float" => $float,
+				"bool" => $bool, 
+				"int" => $int,
+				"object" => $object
+			),
+		));
+		
+		$data->add_record(array(
+			array(
+				"string" => $string, 
+				"float" => $float,
+				"bool" => $bool, 
+				"int" => $int,
+				"object" => $object
+			),
+		));
+		
+		$data->add_record(array(
+			array(
+				"string" => $string, 
+				"float" => $float,
+				"bool" => $bool, 
+				"int" => $int,
+				"object" => $object
+			),
+		));
+		
+		$data->add_record(array(
+			array(
+				"string" => $string, 
+				"float" => $float,
+				"bool" => $bool, 
+				"int" => $int,
+				"object" => $object
+			),
 		));
 		
 		return $data;
@@ -66,6 +107,14 @@ class service extends service_basic {
 	public function call_get_item() {
 		$data = new service_data(service_data::TYPE_RECORD);
 		$data->set_record(array("name" => "name1", "value" => "value1"));
+		
+		return $data;
+	}
+	
+	public function call_save($name, $age) {
+		// save or update data, send success or error to the client
+		$data = new service_data(service_data::TYPE_SUCCESS);
+		$data->set_success();
 		
 		return $data;
 	}
