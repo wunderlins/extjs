@@ -181,7 +181,8 @@ class service_parameter extends enum {
 		$ok = false;
 		if ($value === 1 || $value == "1" || $value === true ||
 		    $value === 0 || $value == "0" || $value === false||
-		    strtolower($value) == "true" || strtolower($value) == "false") {
+		    strtolower($value) == "true" || strtolower($value) == "false" ||
+		    strtolower($value) == "null") {
 			$ok = true;
 		}
 		return $ok;
@@ -260,7 +261,10 @@ class service_parameter extends enum {
 	public function cast($value) {
 		switch($this->type) {
 			case 1: // bool
-				return (bool) $value;
+				if ($value === 0 || $value == "0" || $value === false ||
+						strtolower($value) == "false" || strtolower($value) == "null")
+					return false;
+				return true;
 
 			case 2: // int
 				return (int) $value;
@@ -436,8 +440,6 @@ class service_basic {
 			$s->error(2, "method $fn does not exist"); // exit 
 		}
 		
-		//echo "we got so far ...";
-		
 		// get API
 		$api = $s->find_api_call($fn);
 		//var_dump($api);
@@ -475,9 +477,10 @@ class service_basic {
 			// if empty and string, set NULL to "" again
 			if($value === NULL && $p->type == service_parameter::TYPE_STRING)
 				$value = "";
-			
-			// cast input values. all but array and string
-			$value = $p->cast($value);
+				
+			// decode json objects
+			if ($p->type == service_parameter::TYPE_OBJECT)
+				$value = json_decode($value);
 			
 			// type checking
 			if ($found) {
@@ -485,6 +488,10 @@ class service_basic {
 				if (!$valid) 
 					$s->error(5, "Parameter ". $p->name .", wrong type!"); // exit 
 			}
+			
+			// cast input values. all but object (already casted before validation)
+			if ($p->type != service_parameter::TYPE_OBJECT)
+				$value = $p->cast($value);
 			
 			// CAVE: if not provided, value is set to NULL
 			$params[$p->name] = $value;
