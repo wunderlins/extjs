@@ -27,9 +27,7 @@ function __autoload($class_name) {
 
 // set global error handler
 function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars) {
-	// timestamp for the error entry
-	$dt = date("Y-m-d H:i:s (T)");
-
+	
 	// define an assoc array of error string
 	// in reality the only entries we should
 	// consider are E_WARNING, E_NOTICE, E_USER_ERROR,
@@ -51,23 +49,43 @@ function userErrorHandler($errno, $errmsg, $filename, $linenum, $vars) {
 		          );
 	// set of errors for which a var trace will be saved
 	$user_errors = array(E_USER_ERROR, E_USER_WARNING, E_USER_NOTICE);
-	/*
-	$err = "<errorentry>\n";
-	$err .= "\t<datetime>" . $dt . "</datetime>\n";
-	$err .= "\t<errornum>" . $errno . "</errornum>\n";
-	$err .= "\t<errortype>" . $errortype[$errno] . "</errortype>\n";
-	$err .= "\t<errormsg>" . $errmsg . "</errormsg>\n";
-	$err .= "\t<scriptname>" . $filename . "</scriptname>\n";
-	$err .= "\t<scriptlinenum>" . $linenum . "</scriptlinenum>\n";
-
-	if (in_array($errno, $user_errors)) {
-		  $err .= "\t<vartrace>" . wddx_serialize_value($vars, "Variables") . "</vartrace>\n";
-	}
-	$err .= "</errorentry>\n\n";
-	*/
 	service_basic::error($errno, $errmsg, $filename, $linenum, $vars);
 }
 $old_error_handler = set_error_handler("userErrorHandler");
+
+// to catch all remaining errors except parser errors we use a shutdown function
+
+function shutdown() {
+	$isError = false;
+
+	if ($error = error_get_last()){
+		switch($error['type']){
+			case E_ERROR:
+			case E_CORE_ERROR:
+			case E_COMPILE_ERROR:
+			case E_USER_ERROR:
+				$isError = true;
+				break;
+		}
+	}
+
+	if ($isError)	{
+		echo "{error: {
+			'code' : ".$error['type'].",
+			'message' : '".$error['type']."',
+			'filename' : '".$error['file']."',
+			'linenum' : '".$error['line']."',
+			'vars' : {}
+		}, 
+		'success': false, 
+		'metaData': null, 
+		'record': null, 
+		'root': null, 
+		'type': null}";
+		exit(1);
+	}
+}
+register_shutdown_function('shutdown');
 
 /**
  * all constants are used for enumeration
@@ -88,6 +106,8 @@ class enum {
 		return $this->$name;
 	}
 }
+
+
 
 /**
  * result class
