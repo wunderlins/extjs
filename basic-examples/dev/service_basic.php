@@ -14,7 +14,8 @@ function exception_handler($exception) {
 	//var_dump($exception);
 	$c = $exception->getCode();
 	$m = $exception->getMessage();
-	service_basic::error($c, $m);
+	service_basic::error($c, $m, $exception->getFile(), 
+	                     $exception->getLine(), $exception->getTrace());
 }
 set_exception_handler('exception_handler');
 
