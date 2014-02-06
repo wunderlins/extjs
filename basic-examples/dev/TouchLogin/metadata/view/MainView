@@ -89,6 +89,37 @@
                                 "text": "Register"
                             },
                             "designerId": "87d07c59-f761-4de5-ab26-d2d9f9d82c05"
+                        },
+                        {
+                            "type": "Ext.Img",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "height": 201,
+                                "itemId": "myimg"
+                            },
+                            "designerId": "3cc4571e-9d51-4771-82d4-e6426560fecd",
+                            "cn": [
+                                {
+                                    "type": "basiceventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "onMyimgTap",
+                                        "implHandler": [
+                                            ""
+                                        ],
+                                        "name": "tap"
+                                    },
+                                    "designerId": "06f43b3a-83a7-4bdb-b3fb-21f3be374fc3"
+                                }
+                            ]
                         }
                     ]
                 },

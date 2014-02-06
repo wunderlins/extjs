@@ -43,6 +43,11 @@ Ext.define('TouchLogin.view.MainView', {
                                 margin: 20,
                                 padding: 8,
                                 text: 'Register'
+                            },
+                            {
+                                xtype: 'image',
+                                height: 201,
+                                itemId: 'myimg'
                             }
                         ]
                     },
@@ -61,7 +66,18 @@ Ext.define('TouchLogin.view.MainView', {
                     }
                 ]
             }
+        ],
+        listeners: [
+            {
+                fn: 'onMyimgTap',
+                event: 'tap',
+                delegate: '#myimg'
+            }
         ]
+    },
+
+    onMyimgTap: function(image, e, eOpts) {
+
     }
 
 });
